@@ -16,6 +16,11 @@ public class TaskJournal
     [Required]
     private string journalText{get;set;}
 
+    public TaskJournal(string journalText)
+    {
+        this.journalText = journalText;
+    }
+
     public override string ToString()
     {
         return $"Journal id: {idTaskJournal}"+

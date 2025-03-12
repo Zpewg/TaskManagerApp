@@ -12,7 +12,7 @@ public class UserTasks
        [ForeignKey("iduser")]
        [Column("id_user")]
        private int idUser;
-       [Column("user_taskcol")]
+       [Column("description")]
        [Required]
        private string userTaskCol;
        [Column("date_of_task")]
@@ -21,6 +21,17 @@ public class UserTasks
        [Column("time_of_task")]
        [Required]
        private TimeOnly time;
+       
+       [Column("name_of_task")]
+       [Required]
+       private string nameOfTask;
+
+       public UserTasks(string userTaskCol, DateOnly date, TimeOnly time)
+       {
+              this.userTaskCol = userTaskCol;
+              this.date = date;
+              this.time = time;
+       }
        
        public override string ToString()
        {

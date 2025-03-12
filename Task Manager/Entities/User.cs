@@ -19,8 +19,17 @@ public class User
     [Required]
     [Column("phone_number")]
     private string phoneNumber{get;set;}
-    
 
+    public User(string name, string email, string password, string phoneNumber)
+    {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+    
+    public int getIdUser() => idUser;
+    public string getMail() => email;
     public override string ToString()
     {
         return $"Name: {name}\nEmail: {email}\n Phone: {phoneNumber}";
