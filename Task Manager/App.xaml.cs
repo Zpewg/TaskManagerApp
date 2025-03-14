@@ -45,7 +45,7 @@ namespace Task_Manager
             var serviceProvider = services.BuildServiceProvider();
             var userService = serviceProvider.GetRequiredService<UserService>();
 
-            User user = new User( "Andrei", "Andreeei@gmail.com", "Andrei23", "2384234");
+            User user = new User( "Andrei", "Andreeei@gmail.com", "Andreiii1!", "0712345679");
             await userService.createUser(user); 
         }
 
