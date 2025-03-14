@@ -8,30 +8,36 @@ public class UserTasks
 {
        [Key]
        [Column("iduser_tasks")]
-       private int idUserTasks{get;set;}
+       public int idUserTasks{get;set;}
        [ForeignKey("iduser")]
        [Column("id_user")]
-       private int idUser;
+       public int idUser {get; set; }
        [Column("description")]
        [Required]
-       private string userTaskCol;
+       public string userTaskCol { get; set; }
        [Column("date_of_task")]
        [Required]
-       private DateOnly date;
+       public DateOnly date { get; set; }
        [Column("time_of_task")]
        [Required]
-       private TimeOnly time;
+       public TimeOnly time { get; set; }
        
        [Column("name_of_task")]
        [Required]
-       private string nameOfTask;
+       public string nameOfTask  { get; set; }
+       
+       public UserTasks(){}
 
-       public UserTasks(string userTaskCol, DateOnly date, TimeOnly time)
+
+       public UserTasks(int idUser, string userTaskCol, DateOnly date, TimeOnly time, string nameOfTask)
        {
+              this.idUser = idUser;
               this.userTaskCol = userTaskCol;
               this.date = date;
               this.time = time;
+              this.nameOfTask = nameOfTask;
        }
+
        
        public override string ToString()
        {
