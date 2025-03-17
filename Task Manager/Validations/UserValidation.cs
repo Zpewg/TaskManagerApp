@@ -1,4 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Repository;
+using Task_Manager.Service;
 
 namespace Task_Manager.Validations;
 using Task_Manager.Entities;
@@ -6,9 +9,18 @@ using Task_Manager.Entities;
 public class UserValidation
 {
     public UserValidation(){}
+
     
-    public List<string> Validate(User user)
-    {
+
+    public async  Task<List<string>> Validate(User user)
+    {   
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddDbContext<MyAppDbContext>();
+        serviceCollection.AddScoped<UserService>();
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+        var userService = serviceProvider.GetRequiredService<UserService>();
+        
+        List<User> users = await userService.getUsers();
         Regex regexMail = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
                                     + "@"
                                     + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");
@@ -42,6 +54,10 @@ public class UserValidation
             errors.Add("Password is not valid");
         }
         
+        if (users.Where(u=> u.email.Equals(user.email)).Count() > 0)
+        {
+            errors.Add("Email is already taken");
+        }
         
         return errors;
     }

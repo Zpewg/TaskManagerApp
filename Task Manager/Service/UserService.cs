@@ -16,7 +16,7 @@ public class UserService
 
     public async Task createUser(User user)
     {
-        List<string> errors = userValidation.Validate(user);
+        List<string> errors = await userValidation.Validate(user);
         if (errors.Any())
         {
             foreach (var e in errors)
@@ -40,5 +40,27 @@ public class UserService
         }
         return "User not found";
             
+    }
+
+    public async Task<List<User>> getUsers()
+    {
+        return await _userRepository.GetUsersAsync();
+    }
+
+    public async Task updateUser()
+    {
+        User user = new User(1, "Andrew", "ceva@gmail.com", "Absabs123!", "0753969716" );
+        List<string> errors = await userValidation.Validate(user);
+        if (errors.Any())
+        {
+            foreach (var e in errors)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        else
+        {
+            _userRepository.UpdateUserAsync(user);
+        }
     }
 }
