@@ -12,7 +12,7 @@ public class UserService
     {
         _userRepository = userRepository;
     }
-
+    public UserService(){}
 
     public async Task createUser(User user)
     {
@@ -28,5 +28,17 @@ public class UserService
         {
             await _userRepository.AddUserAsync(user);
         }
+    }
+
+    public async Task<string> deleteUser(string mail)
+    {
+        int? id = await _userRepository.GetUserByMailAsync(mail);
+        if (id.HasValue)
+        {
+            await _userRepository.DeleteUserAsync(id.Value);
+            return "User successfully deleted";
+        }
+        return "User not found";
+            
     }
 }

@@ -1,4 +1,6 @@
-﻿using Task_Manager.Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Entities;
+using Task_Manager.Service;
 
 namespace Task_Manager.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -6,13 +8,14 @@ using Microsoft.EntityFrameworkCore;
 public class UserRepository
 {
     private readonly MyAppDbContext _context;
+    
 
     public UserRepository(MyAppDbContext context)
     {
         _context = context;
     }
     
-
+    public UserRepository(){}
     public async Task<List<User>> GetUsersAsync()
     {
         return await _context.Users.ToListAsync();
@@ -39,8 +42,7 @@ public class UserRepository
 
     public async Task<int?> GetUserByMailAsync(string mail)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.getMail() == mail);
-
-        return user?.getIdUser();
+        return await _context.Users.Where(u => u.email == mail).Select(u => (int?)u.idUser).FirstOrDefaultAsync();
+       
     }
 }

@@ -37,16 +37,22 @@ namespace Task_Manager
 
            
             services.AddDbContext<MyAppDbContext>();
-
-          
             services.AddScoped<UserRepository>();
             services.AddScoped<UserService>();
+            
 
             var serviceProvider = services.BuildServiceProvider();
             var userService = serviceProvider.GetRequiredService<UserService>();
-
+            
+            /*
             User user = new User( "Andrei", "Andreeei@gmail.com", "Andreiii1!", "0712345679");
             await userService.createUser(user); 
+             */
+            string? message = await userService.deleteUser("Andreeei@gmail.com");
+            MessageBox.Show(message);
+           
+         
+          
         }
 
 

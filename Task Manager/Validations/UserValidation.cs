@@ -15,8 +15,9 @@ public class UserValidation
         //Only phonenumbers from romania are accepted
         Regex regexPhone = new Regex(@"^07\d{8}$");
         //All characters from beggining to end must be letters or numbers
-        Regex regexUserName = new Regex("^[a-zA-Z0-9]+$");
-        //Must contain atleast one digit, one lower case character, one upper case ch and one special character
+        Regex regexUserName = new Regex("^[a-zA-Z0-9]{1,20}$");
+
+        //Must contain atleast one digit, one lower case character, one upper case chcd  and one special character
         //The min length is 8 the max length is 15
         Regex regexPassword = new Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,15}$");
         List<string> errors = new List<string>();

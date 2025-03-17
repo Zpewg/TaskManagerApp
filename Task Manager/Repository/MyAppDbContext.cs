@@ -23,7 +23,8 @@ public class MyAppDbContext : DbContext
 
             var connectionString = config.GetConnectionString("DefaultConnection");
 
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)));
+
         }
     }
 
