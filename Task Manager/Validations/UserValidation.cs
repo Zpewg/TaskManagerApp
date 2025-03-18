@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Azure.Core.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using Task_Manager.Repository;
 using Task_Manager.Service;
@@ -8,19 +9,20 @@ using Task_Manager.Entities;
 
 public class UserValidation
 {
+    private readonly UserService _userService;
+    
+    
+    public UserValidation(UserService userService)
+    {
+        _userService = userService;
+    }
     public UserValidation(){}
 
-    
 
     public async  Task<List<string>> Validate(User user)
-    {   
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddDbContext<MyAppDbContext>();
-        serviceCollection.AddScoped<UserService>();
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        var userService = serviceProvider.GetRequiredService<UserService>();
-        
-        List<User> users = await userService.getUsers();
+    { 
+        List<User> users = await _userService.getUsers();
+        Console.WriteLine(users.Count);
         Regex regexMail = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
                                     + "@"
                                     + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");

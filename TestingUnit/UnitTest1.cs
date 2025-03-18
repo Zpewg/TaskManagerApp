@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Testing.Platform.Extensions.Messages;
 using Moq;
 using Task_Manager.Repository;
@@ -10,15 +11,24 @@ using Task_Manager.Validations;
 
 public class UnitTest1
 {
+   private readonly UserValidation _userValidation;
+    private IServiceProvider ServiceProvider{get; set;}
+    public UnitTest1()
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddDbContext<MyAppDbContext>();
+        serviceCollection.AddScoped<UserRepository>();
+        serviceCollection.AddScoped<UserService>();
+        serviceCollection.AddScoped<UserValidation>();
+        ServiceProvider = serviceCollection.BuildServiceProvider();
+        _userValidation = ServiceProvider.GetService<UserValidation>();
+    }
     //Expected to succed for the given user
     [Fact]
     public async Task ValidUserTest()
     {
         var user = new User("Andrei", "Andrei@mail.com", "Andremail123!", "0712345678");
-
-        UserValidation userValidation = new UserValidation();
-
-        Assert.Empty(await userValidation.Validate(user));
+        Assert.Empty(await _userValidation.Validate(user));
     }
 
     [Theory]
@@ -27,18 +37,16 @@ public class UnitTest1
     public async Task WrongMailTest(string email)
     {
         var user2 = new User("Andrei", email, "Andremail123!", "0712367890");
-        UserValidation userValidation = new UserValidation();
-        List<string> test = await userValidation.Validate(user2);
+        List<string> test = await _userValidation.Validate(user2);
         Assert.Contains(test, x => x.Contains("Email is not valid"));
         
     }
-
+    
     [Fact]
     public async Task AlreadyTakenMailTest()
     {
         var user2 = new User("Andrei", "ceva@gmail.com", "Andremail123!", "0712345678");
-        UserValidation userValidation = new UserValidation();
-        List<string> test =await userValidation.Validate(user2);
+        List<string> test =await _userValidation.Validate(user2);
         Assert.Contains(test, x => x.Contains("Email is already taken"));
     }
     
@@ -58,8 +66,7 @@ public class UnitTest1
     public async Task WrongPasswordTest(string wrongPassword)
     {
         var user3 = new User("Andrei", "Andrei@mail.com", wrongPassword, "0712345678");
-        UserValidation userValidation = new UserValidation();
-        List<string> test = await userValidation.Validate(user3);
+        List<string> test = await _userValidation.Validate(user3);
         Assert.Contains(test, x => x.Contains("Password is not valid"));
         
     }
@@ -72,8 +79,7 @@ public class UnitTest1
     public async Task WrongPhoneNumberTest(string wrongPhoneNumber)
     {
         var user4 = new User("Adnrei", "Andrei@gmail.com", "Asdasdasd123!", wrongPhoneNumber);
-        UserValidation userValidation = new UserValidation();
-        List<string> test = await userValidation.Validate(user4);
+        List<string> test = await _userValidation.Validate(user4);
         Assert.Contains(test, x => x.Contains("Phone number is not valid"));
     }
 }

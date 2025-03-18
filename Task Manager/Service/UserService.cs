@@ -1,4 +1,6 @@
-﻿namespace Task_Manager.Service;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Task_Manager.Service;
 using Task_Manager.Repository;
 using Task_Manager.Entities;
 using Task_Manager.Validations;
@@ -7,16 +9,17 @@ public class UserService
 {
 
     private readonly UserRepository _userRepository;
-    private readonly UserValidation userValidation = new UserValidation();
+    private readonly UserValidation _userValidation;
     public UserService(UserRepository userRepository)
     {
         _userRepository = userRepository;
+        
     }
     public UserService(){}
 
     public async Task createUser(User user)
     {
-        List<string> errors = await userValidation.Validate(user);
+        List<string> errors = await _userValidation.Validate(user);
         if (errors.Any())
         {
             foreach (var e in errors)
@@ -50,7 +53,7 @@ public class UserService
     public async Task updateUser()
     {
         User user = new User(1, "Andrew", "ceva@gmail.com", "Absabs123!", "0753969716" );
-        List<string> errors = await userValidation.Validate(user);
+        List<string> errors = await _userValidation.Validate(user);
         if (errors.Any())
         {
             foreach (var e in errors)
