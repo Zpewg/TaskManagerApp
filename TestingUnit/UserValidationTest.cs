@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Testing.Platform.Extensions.Messages;
-using Moq;
 using Task_Manager.Repository;
 
 namespace TestingUnit;
@@ -9,11 +7,11 @@ using Task_Manager.Entities;
 using Task_Manager.Service;
 using Task_Manager.Validations;
 
-public class UnitTest1
+public class UserValidationTest
 {
    private readonly UserValidation _userValidation;
     private IServiceProvider ServiceProvider{get; set;}
-    public UnitTest1()
+    public UserValidationTest()
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddDbContext<MyAppDbContext>();

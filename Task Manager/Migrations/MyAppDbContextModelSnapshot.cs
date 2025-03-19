@@ -31,7 +31,7 @@ namespace Task_Manager.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("idTaskJournal"));
 
-                    b.Property<int>("idUser")
+                    b.Property<int>("iduser")
                         .HasColumnType("int")
                         .HasColumnName("id_user");
 

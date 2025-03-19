@@ -1,12 +1,8 @@
 ﻿using System.Text.RegularExpressions;
-using Azure.Core.Pipeline;
-using Microsoft.Extensions.DependencyInjection;
-using Task_Manager.Repository;
 using Task_Manager.Service;
 
 namespace Task_Manager.Validations;
 using Task_Manager.Entities;
-
 public class UserValidation
 {
     private readonly UserService _userService;
@@ -16,8 +12,6 @@ public class UserValidation
     {
         _userService = userService;
     }
-    public UserValidation(){}
-
 
     public async  Task<List<string>> Validate(User user)
     { 

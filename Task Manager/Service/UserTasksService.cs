@@ -2,11 +2,11 @@
 using Task_Manager.Repository;
 using Task_Manager.Entities;
 
-public class UserTaskService
+public class UserTasksService
 {
     private readonly UserTasksRepository _userTasks;
 
-    public UserTaskService(UserTasksRepository userTasks)
+    public UserTasksService(UserTasksRepository userTasks)
     {
         _userTasks = userTasks;
     }
