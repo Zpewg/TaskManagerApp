@@ -35,6 +35,14 @@ public class UserTasksRepository
          _context.UserTasks.Remove(userTasks);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<int?> FindUserByTaskName(string taskName)
+    {
+        return await _context.UserTasks
+            .Where(u=> u.nameOfTask == taskName)
+            .Select(u=> (int?)u.idUserTasks)
+            .FirstOrDefaultAsync();
+    } 
     
     
 }

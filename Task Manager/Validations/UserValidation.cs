@@ -22,7 +22,7 @@ public class UserValidation
     public async  Task<List<string>> Validate(User user)
     { 
         List<User> users = await _userService.getUsers();
-        Console.WriteLine(users.Count);
+      
         Regex regexMail = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
                                     + "@"
                                     + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");
@@ -59,6 +59,11 @@ public class UserValidation
         if (users.Where(u=> u.email.Equals(user.email)).Count() > 0)
         {
             errors.Add("Email is already taken");
+        }
+
+        if (users.Where(u => u.phoneNumber.Equals(user.phoneNumber)).Count() > 0)
+        {
+            errors.Add("Phone number is already taken");
         }
         
         return errors;

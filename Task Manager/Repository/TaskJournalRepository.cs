@@ -35,5 +35,13 @@ public class TaskJournalRepository
         _context.TaskJournal.Remove(taskJournal);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<int?> GetTaskJournalIdAsync(string taskJournalName)
+    {
+        return await _context.TaskJournal
+            .Where(u=> u.journalName == taskJournalName)
+            .Select(u => (int?)u.idTaskJournal)
+            .FirstOrDefaultAsync();
+    }
     
 }

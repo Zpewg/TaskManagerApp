@@ -45,26 +45,7 @@ namespace Task_Manager
         }
         public async void StartApp()
         {
- 
- 
-           
-            User user = new User( "Andrei", "Andreeei@gmail.com", "Andreiii1!", "0712345679");
-            /*
-            await userService.createUser(user); 
-             
-            string? message = await userService.deleteUser("Andreeei@gmail.com");
-            MessageBox.Show(message);
             
-            List<User> users = new List<User>();
-            users = await userService.getUsers();
-            foreach (User user in users)
-            {
-                Console.WriteLine(user.ToString());
-            }*/
-            var userValidation = ServiceProvider.GetRequiredService<UserValidation>();
-            await userValidation.Validate(user);    
-
-            //userService.updateUser();
 
         }
 

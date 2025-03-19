@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata;
 
 namespace Task_Manager.Entities;
 
@@ -22,7 +23,7 @@ public class UserTasks
        [Required]
        public TimeOnly time { get; set; }
        
-       [Column("name_of_task")]
+       [Column("name_of_task", TypeName = "varchar(45)")]
        [Required]
        public string nameOfTask  { get; set; }
        

@@ -49,6 +49,14 @@ public class UnitTest1
         List<string> test =await _userValidation.Validate(user2);
         Assert.Contains(test, x => x.Contains("Email is already taken"));
     }
+
+    [Fact]
+    public async Task AlreadyTakenPhoneNumber()
+    {
+        var user = new User("Andrei", "zpwg@gmail.com", "Andreimail123!", "0753969716");
+        List<string> test = await _userValidation.Validate(user);
+        Assert.Contains(test, x => x.Contains("Phone number is already taken"));
+    }
     
     [Theory]
     //no capital letter

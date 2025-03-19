@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
 
 namespace Task_Manager.Service;
 using Task_Manager.Repository;
@@ -15,7 +15,7 @@ public class UserService
         _userRepository = userRepository;
         
     }
-    public UserService(){}
+    
 
     public async Task createUser(User user)
     {
@@ -50,9 +50,8 @@ public class UserService
         return await _userRepository.GetUsersAsync();
     }
 
-    public async Task updateUser()
+    public async Task updateUser(User user)
     {
-        User user = new User(1, "Andrew", "ceva@gmail.com", "Absabs123!", "0753969716" );
         List<string> errors = await _userValidation.Validate(user);
         if (errors.Any())
         {
