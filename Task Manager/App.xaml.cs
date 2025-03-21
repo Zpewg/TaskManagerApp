@@ -2,6 +2,7 @@
 using System.Windows;
 using Task_Manager.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Task_Manager.Repository;
 using Task_Manager.Service;
 using Task_Manager.Validations;
@@ -19,16 +20,20 @@ namespace Task_Manager
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddDbContext<MyAppDbContext>();
             serviceCollection.AddScoped<UserRepository>();
+            serviceCollection.AddScoped<UserTasksRepository>();
+            serviceCollection.AddScoped<TaskJournalRepository>();
             serviceCollection.AddScoped<UserService>();
-            serviceCollection.AddScoped<UserValidation>();
+            serviceCollection.AddScoped<TaskJournalService>();
+            serviceCollection.AddScoped<UserTasksService>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
             base.OnStartup(e);
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
         public App()
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
-            StartApp();
 
         }
 
@@ -41,11 +46,6 @@ namespace Task_Manager
             {
                 MessageBox.Show("Connection established");
             }
-
-        }
-        public async void StartApp()
-        {
-            
 
         }
 

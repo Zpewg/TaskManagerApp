@@ -10,9 +10,9 @@ public class TaskJournal
     [Column("idtask_journal")]
     public int idTaskJournal{get;set;}
     [Column("id_user")]
-    [ForeignKey("id_user")]
+    [ForeignKey("id_user_journal")]
     public int iduser{get;set;}
-    [Column("journal_name", TypeName = "varchar(45)")]
+    [Column("journal_name", TypeName = "varchar(18)")]
     public string journalName{get;set;}
     [Column("journal_text")]
     [Required]

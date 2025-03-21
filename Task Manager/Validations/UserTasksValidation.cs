@@ -17,22 +17,22 @@ public class UserTasksValidation
     public async Task<List<string>> ValidateUserTask(UserTasks userTasks)
     {
         List<string> errorList = new List<string>();
-        List<UserTasks> tasksList = await _userTasksService.GetUserTasks();
         DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
         TimeOnly currentTime = TimeOnly.FromDateTime(DateTime.Now);
-        Regex regexTaskName = new Regex(@"^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/~`=-]{1,45}$");
+        //Any character, max 15ch
+        Regex regexTaskName = new Regex(@"^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/~`=-]{1,15}$");
 
         if (!regexTaskName.IsMatch(userTasks.nameOfTask))
         {
             errorList.Add("Invalid Task Name");
         }
 
-        if (tasksList.Where(t => t.nameOfTask.Equals(userTasks.nameOfTask)).Count() > 0)
+        if (userTasks.date < currentDate)
         {
-            errorList.Add("Task name already exists");
+            errorList.Add("Invalid Date Range");
         }
 
-        if (userTasks.date < currentDate || userTasks.time < currentTime)
+        if (userTasks.date <= currentDate && userTasks.time < currentTime)
         {
             errorList.Add("You cannot add a time in the past");
         }

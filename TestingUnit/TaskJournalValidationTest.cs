@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.DirectoryServices.ActiveDirectory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TestingUnit;
 using Task_Manager.Repository;
@@ -38,8 +39,18 @@ public class TaskJournalValidationTest
     public async Task ValidTaskJournalTest()
     {
         int idComplete = await returnInt();
-        var journal = new TaskJournal(idComplete,"Name", "Description");
+        var journal = new TaskJournal(idComplete,"Name2", "Description");
         Assert.Empty(await _taskJournalValidation.JournalValidation(journal));
     }
+
+    [Fact]
+    public async Task InvalidTaskJournalName()
+    {
+        int idComplete = await returnInt();
+        var journal = new TaskJournal(idComplete, "NameNameNameNameName", "Description");
+        List<string> test =await _taskJournalValidation.JournalValidation(journal);
+        Assert.Contains(test, x => x.Contains("Invalid journal name"));
+    }
+    
     
 }

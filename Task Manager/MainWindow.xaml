@@ -6,7 +6,36 @@
         xmlns:local="clr-namespace:Task_Manager"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#FF2C3E50" Offset="0.0"/>
+                            
+                        <GradientStop Color="#FF4CA1AF" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            
+            <TextBlock Text="Welcome to Task Management Application!"
+                       FontSize="20" FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="0,30,0,0"/>
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Content ="Log in" Grid.Column="0"
+                        Width ="120" Height="40"
+                        Style="{StaticResource RoundedButton}"/>
+                        
+                <Button Content = "Sign up" Grid.Column="2"
+                        Width="120" Height="40"
+                        Style="{StaticResource RoundedButton}"/>
+                        
+                
+            </Grid>
+            </Grid>
 </Window>

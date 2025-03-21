@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Task_Manager.Repository;
 
@@ -11,9 +12,11 @@ using Task_Manager.Repository;
 namespace Task_Manager.Migrations
 {
     [DbContext(typeof(MyAppDbContext))]
-    partial class MyAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250321080012_TaskJournalFkAdd")]
+    partial class TaskJournalFkAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace Task_Manager.Migrations
 
                     b.Property<string>("journalName")
                         .IsRequired()
-                        .HasColumnType("varchar(18)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnName("journal_name");
 
                     b.Property<string>("journalText")
@@ -104,7 +107,7 @@ namespace Task_Manager.Migrations
 
                     b.Property<string>("nameOfTask")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("varchar(45)")
                         .HasColumnName("name_of_task");
 
                     b.Property<TimeOnly>("time")

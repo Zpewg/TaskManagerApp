@@ -14,7 +14,6 @@ public class UserTasks
        [Column("id_user")]
        public int idUser {get; set; }
        [Column("description")]
-       [Required]
        public string userTaskCol { get; set; }
        [Column("date_of_task")]
        [Required]
@@ -23,20 +22,28 @@ public class UserTasks
        [Required]
        public TimeOnly time { get; set; }
        
-       [Column("name_of_task", TypeName = "varchar(45)")]
+       [Column("name_of_task", TypeName = "varchar(15)")]
        [Required]
        public string nameOfTask  { get; set; }
        
        public UserTasks(){}
 
 
-       public UserTasks(int idUser, string userTaskCol, DateOnly date, TimeOnly time, string nameOfTask)
+       public UserTasks(int idUser,string nameOfTask, string userTaskCol, DateOnly date, TimeOnly time)
        {
               this.idUser = idUser;
               this.userTaskCol = userTaskCol;
               this.date = date;
               this.time = time;
               this.nameOfTask = nameOfTask;
+       }
+
+       public UserTasks(int idUser, string nameOfTask, DateOnly date, TimeOnly time)
+       {
+              this.idUser = idUser;
+              this.nameOfTask = nameOfTask;
+              this.date = date;
+              this.time = time;
        }
 
        
