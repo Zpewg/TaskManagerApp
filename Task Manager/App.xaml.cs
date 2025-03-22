@@ -34,7 +34,6 @@ namespace Task_Manager
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
-
         }
 
         private void ConfigureServices(IServiceCollection services)

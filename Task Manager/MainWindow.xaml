@@ -29,12 +29,13 @@
                 </Grid.ColumnDefinitions>
                 <Button Content ="Log in" Grid.Column="0"
                         Width ="120" Height="40"
-                        Style="{StaticResource RoundedButton}"/>
+                        Style="{DynamicResource RoundedButton}"
+                        Click = "Login_Click"/>
                         
                 <Button Content = "Sign up" Grid.Column="2"
                         Width="120" Height="40"
-                        Style="{StaticResource RoundedButton}"/>
-                        
+                        Style="{DynamicResource RoundedButton}"
+                        Click="SignUp_Click"/>
                 
             </Grid>
             </Grid>
