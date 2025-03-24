@@ -5,13 +5,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:validations="clr-namespace:Task_Manager.Validations"
         xmlns:local="clr-namespace:Task_Manager"
+        xmlns:helpers="clr-namespace:Task_Manager.Helpers"
         mc:Ignorable="d"
         Title="SignUp" Height="450" Width="800">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#FF2C3E50" Offset="0.0"/>
-                            
                 <GradientStop Color="#FF4CA1AF" Offset="1.0"/>
             </LinearGradientBrush>
         </Grid.Background>
@@ -27,63 +27,57 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            </Grid>
+        </Grid>
         <Grid>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
-                <TextBlock Text="Username:" />
-                <TextBox>
+                <Label Content="Username:" FontWeight="Bold" />
+                <TextBox Name="txtUsername" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
-                        <Binding Path="Username" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
                             <Binding.ValidationRules>
                                 <validations:NotEmptyValidationRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
+                <TextBlock Foreground="Red" FontSize="12" Text="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=txtUsername}" />
 
-                <TextBlock Text="Email:" />
-                <TextBox>
+                <Label Content="Email:" FontWeight="Bold" />
+                <TextBox Name="txtEmail" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
-                        <Binding Path="Email" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
                             <Binding.ValidationRules>
                                 <validations:NotEmptyValidationRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBlock Text="Password:" />
-                <TextBox>
+                <TextBlock Foreground="Red" FontSize="12" Text="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=txtEmail}" />
+                
+                <Label Content="Password:" FontWeight="Bold" />
+                <PasswordBox Name="txtPassword" Width="200" helpers:PasswordHelper.BoundPassword="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                </PasswordBox>
+                <TextBlock Foreground="Red" FontSize="12" Text="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=txtPassword}" />
+                
+                <Label Content="Confirm Password:" FontWeight="Bold" />
+                <PasswordBox Name="txtConfirmPassword" Width="200" helpers:PasswordHelper.BoundPassword="{Binding Password2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                </PasswordBox>
+                <TextBlock Foreground="Red" FontSize="12" Text="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=txtConfirmPassword}" />
+
+                <Label Content="Phone Number:" FontWeight="Bold" />
+                <TextBox Name="txtPhoneNumber" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
-                        <Binding Path="Password1" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
                             <Binding.ValidationRules>
                                 <validations:NotEmptyValidationRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBlock Text="Confirm your password:" />
-                <TextBox>
-                    <TextBox.Text>
-                        <Binding Path="Password2" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validations:NotEmptyValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBlock Text="Phone Number:" />
-                <TextBox>
-                    <TextBox.Text>
-                        <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validations:NotEmptyValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                <TextBlock Foreground="Red" FontSize="12" Text="{Binding (Validation.Errors).CurrentItem.ErrorContent, ElementName=txtPhoneNumber}" />
+
                 <Button Content="Sign Up" Style="{DynamicResource RoundedButton}" Click="SignUpButton_Click" Width="200" Height="40" />
             </StackPanel>
         </Grid>
     </Grid>
-    
 </Window>
