@@ -10,11 +10,11 @@ namespace Task_Manager
     public class SignUpViewModel : INotifyPropertyChanged
     {
         private string _username;
-        private readonly UserService _userService;
+        private UserService _userService;
 
-        public SignUpViewModel()
+        public SignUpViewModel(UserService userService)
         {
-            _userService = _userService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         public string Username
@@ -186,14 +186,9 @@ namespace Task_Manager
                 MessageBox.Show("Please fix validation errors!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            
 
-            User newUser = new()
-            {
-                name = this.Username,
-                email = this.Email,
-                phoneNumber = this.PhoneNumber,
-                password = this.Password
-            };
+            User newUser =  new User(Username, Email, Password, PhoneNumber);
             
             List<string> errors = await _userService.createUser(newUser);
             if (errors.Any())

@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Service;
 
 namespace Task_Manager;
 
@@ -8,10 +10,15 @@ public partial class SignUpWindow : Window
     public SignUpWindow()
     {
         InitializeComponent();
-        this.DataContext = new SignUpViewModel();
-    }
     
-    private void SignUpButton_Click(object sender, RoutedEventArgs e)
+        var userService = App.ServiceProvider.GetService<UserService>();
+            this.DataContext = new SignUpViewModel(userService);
+        
+
+    }
+
+    
+    private async void SignUpButton_Click(object sender, RoutedEventArgs e)
     {
         var viewModel = (SignUpViewModel)this.DataContext;
 
@@ -20,8 +27,7 @@ public partial class SignUpWindow : Window
             MessageBox.Show("Unexpected error: ViewModel is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-
-        // Verifică fiecare câmp
+        
         viewModel.ValidateUsername();
         viewModel.ValidateEmail();
         viewModel.ValidatePhoneNumber();
@@ -37,7 +43,7 @@ public partial class SignUpWindow : Window
         string passwordValidation = viewModel.ValidatePasswords();
         if (passwordValidation == "valid")
         {
-            viewModel.RegisterUser();
+          await viewModel.RegisterUser();
         }
         else
         {

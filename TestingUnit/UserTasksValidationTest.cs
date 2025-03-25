@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TestingUnit;
 using Task_Manager.Validations;
@@ -16,7 +18,13 @@ public class UserTasksValidationTest
     public UserTasksValidationTest()
     {
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddDbContext<MyAppDbContext>();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("C:\\Task Manager App\\Task Manager\\Task Manager\\appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        serviceCollection.AddDbContext<MyAppDbContext>(options => 
+            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21))));
         serviceCollection.AddScoped<UserTasksRepository>();
         serviceCollection.AddScoped<UserTasksService>();
         serviceCollection.AddScoped<UserTasksValidation>();
