@@ -27,24 +27,23 @@ public partial class SignUpWindow : Window
         viewModel.ValidatePhoneNumber();
         viewModel.ValidatePasswords();
 
-        // Verifică dacă există erori
+        
         if (viewModel.HasErrors)
         {
             MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-
-        // Validarea parolelor
+        
         string passwordValidation = viewModel.ValidatePasswords();
         if (passwordValidation == "valid")
         {
-            MessageBox.Show("Sign-up successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            // Aici poți apela service-ul care adaugă user-ul în baza de date
+            viewModel.RegisterUser();
         }
         else
         {
             MessageBox.Show(passwordValidation, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+        
     }
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {

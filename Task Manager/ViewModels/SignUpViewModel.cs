@@ -1,12 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using Task_Manager.Entities;
+using Task_Manager.Service;
 
 namespace Task_Manager
 {
     public class SignUpViewModel : INotifyPropertyChanged
     {
         private string _username;
+        private readonly UserService _userService;
+
+        public SignUpViewModel()
+        {
+            _userService = _userService;
+        }
+
         public string Username
         {
             get { return _username; }
@@ -22,6 +32,7 @@ namespace Task_Manager
         }
 
         private string _email;
+
         public string Email
         {
             get { return _email; }
@@ -37,6 +48,7 @@ namespace Task_Manager
         }
 
         private string _phoneNumber;
+
         public string PhoneNumber
         {
             get { return _phoneNumber; }
@@ -52,6 +64,7 @@ namespace Task_Manager
         }
 
         private string _password;
+
         public string Password
         {
             get { return _password; }
@@ -66,6 +79,7 @@ namespace Task_Manager
         }
 
         private string _password2;
+
         public string Password2
         {
             get { return _password2; }
@@ -85,15 +99,6 @@ namespace Task_Manager
 
         public bool HasErrors => _errors.Any();
 
-        public IEnumerable<string> GetErrors(string propertyName)
-        {
-            if (_errors.ContainsKey(propertyName))
-            {
-                return _errors[propertyName];
-            }
-            return null;
-        }
-
         private void AddError(string propertyName, string errorMessage)
         {
             if (!_errors.ContainsKey(propertyName))
@@ -110,9 +115,16 @@ namespace Task_Manager
             if (_errors.ContainsKey(propertyName))
             {
                 _errors[propertyName].Clear();
+                
+                if (_errors[propertyName].Count == 0)
+                {
+                    _errors.Remove(propertyName);
+                }
+
                 OnErrorsChanged(propertyName);
             }
         }
+
 
         private void OnErrorsChanged(string propertyName)
         {
@@ -166,5 +178,36 @@ namespace Task_Manager
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public async Task RegisterUser()
+        {
+            if (HasErrors || ValidatePasswords() != "valid")
+            {
+                MessageBox.Show("Please fix validation errors!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            User newUser = new()
+            {
+                name = this.Username,
+                email = this.Email,
+                phoneNumber = this.PhoneNumber,
+                password = this.Password
+            };
+            
+            List<string> errors = await _userService.createUser(newUser);
+            if (errors.Any())
+            {
+                string errorMessage = string.Join("\n", errors);
+                MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show("User created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
     }
+
 }
+    
+

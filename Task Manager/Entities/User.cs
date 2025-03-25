@@ -43,6 +43,7 @@ public class User
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+    public User(){}
 
     
     public int getIdUser() => idUser;

@@ -17,20 +17,16 @@ public class UserService
     }
     
 
-    public async Task createUser(User user)
+    public async Task<List<string>> createUser(User user)
     {
         List<string> errors = await _userValidation.Validate(user);
         if (errors.Any())
         {
-            foreach (var e in errors)
-            {
-                Console.WriteLine(e);
-            }
+            return errors;
         }
-        else
-        {
             await _userRepository.AddUserAsync(user);
-        }
+            return errors;
+        
     }
 
     public async Task<string> deleteUser(string mail)
