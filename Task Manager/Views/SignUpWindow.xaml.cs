@@ -44,6 +44,7 @@ public partial class SignUpWindow : Window
         if (passwordValidation == "valid")
         {
           await viewModel.RegisterUser();
+          this.Close();
         }
         else
         {

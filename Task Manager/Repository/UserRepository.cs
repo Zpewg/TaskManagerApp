@@ -45,4 +45,14 @@ public class UserRepository
         return await _context.Users.Where(u => u.email == mail).Select(u => (int?)u.idUser).FirstOrDefaultAsync();
        
     }
+
+    public async Task<User?> ReturnUser(string mail)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.email == mail);
+    }
+
+    public async Task<string?> ReturnUserPassword(string mail)
+    {
+        return await _context.Users.Where(u => u.email == mail).Select(u => u.password).FirstOrDefaultAsync();
+    }
 }

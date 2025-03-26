@@ -44,4 +44,10 @@
       </Page>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Views\SignUpWindow.xaml.cs">
+        <DependentUpon>SignUpWindow.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

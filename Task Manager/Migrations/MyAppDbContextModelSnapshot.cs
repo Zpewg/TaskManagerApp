@@ -71,8 +71,8 @@ namespace Task_Manager.Migrations
 
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)");
+                        .HasMaxLength(90)
+                        .HasColumnType("varchar(90)");
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()

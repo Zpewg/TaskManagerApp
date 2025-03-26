@@ -20,8 +20,8 @@ public class User
     [MaxLength(60)]
     public string email{get;set;}
     [Required]
-    [Column(TypeName = "varchar(16)")]
-    [MaxLength(16)]
+    [Column(TypeName = "varchar(90)")]
+    [MaxLength(90)]
     public string password{get;set;}
     [Required]
     [Column("phone_number", TypeName = "varchar(10)")]
