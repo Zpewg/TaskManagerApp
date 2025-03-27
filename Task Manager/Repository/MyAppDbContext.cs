@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-using System.IO;
-using System.Windows;
+
 using Task_Manager.Entities;
 
 namespace Task_Manager.Repository;
@@ -27,19 +26,6 @@ public class MyAppDbContext : DbContext
  
             optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)));
              
-        }
-    }
-
-    public bool TestConnection()
-    {
-        try
-        {
-            return Database.CanConnect();
-        }
-        catch (Exception ex)
-        {
-            Console.Write($"{ex.Message}\n{ex.StackTrace}");
-            return false;
         }
     }
 }

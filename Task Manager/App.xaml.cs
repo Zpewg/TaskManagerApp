@@ -40,9 +40,6 @@ namespace Task_Manager
             serviceCollection.AddScoped<SignUpViewModel>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
             base.OnStartup(e);
-            
-            
-            
         }
 
 
