@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Entities;
+using Task_Manager.Repository;
 using Task_Manager.Service;
 using Task_Manager.Views;
 
@@ -11,12 +13,14 @@ public partial class LoginWindow : Window
     {
         InitializeComponent();
         var userService = App.ServiceProvider.GetRequiredService< UserService >() ;
-        this.DataContext = new LoginViewModel(userService);
+        var userRepository = App.ServiceProvider.GetRequiredService< UserRepository >();
+        this.DataContext = new LoginViewModel(userService, userRepository);
     }
 
     private async void LoginButton_Click(object sender, RoutedEventArgs e)
     {
         var viewModel = (LoginViewModel)this.DataContext;
+        
         if (viewModel == null)
         {
             MessageBox.Show("Unexpected error: ViewModel is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -34,7 +38,20 @@ public partial class LoginWindow : Window
             return;
         }
 
-        await viewModel.LoginUser();
+        User user = await viewModel.LoginUser();
+       
+        if (user != null)
+        {
+            MessageBox.Show("User logged in.", "Logged in", MessageBoxButton.OK, MessageBoxImage.Information);
+            var tasksWindow = new TasksWindow(user);
+            tasksWindow.Show();
+            this.Close();
+        }
+
+        if (user is null)
+        {
+            MessageBox.Show("Unexpected error: User is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
 

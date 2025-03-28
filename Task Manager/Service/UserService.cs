@@ -83,7 +83,7 @@ public class UserService
 
     public async Task<string> loginUser(string mail, string password)
     {
-        var user = await _userRepository.GetUserByMailAsync(mail);
+        var user = await _userRepository.ReturnUser(mail);
         if (user == null)
         {
             return "User not found";

@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Task_Manager.Entities;
+using Task_Manager.Repository;
 using Task_Manager.Service;
 
 namespace Task_Manager
@@ -13,11 +15,13 @@ namespace Task_Manager
         private string _email;
         private string _password;
         private readonly UserService _userService;
+        private readonly UserRepository _userRepository;
         private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
-        public LoginViewModel(UserService userService)
+        public LoginViewModel(UserService userService, UserRepository userRepository)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
         public string Email
@@ -116,18 +120,19 @@ namespace Task_Manager
         }
         
 
-        public async Task LoginUser()
+        public async Task<User> LoginUser()
         {  
             
             string result = await _userService.loginUser(Email, Password);
             if (result == "User successfully logged in")
             {
                 MessageBox.Show("Welcome!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                User user = await _userRepository.ReturnUser(Email);
+                return user;
             }
-            else
-            {
-                MessageBox.Show(result, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+           
+            MessageBox.Show(result, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
         }
 
     }

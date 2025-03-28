@@ -11,8 +11,9 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FF2C3E50" Offset="0.0"/>
-                <GradientStop Color="#FF4CA1AF" Offset="1.0"/>
+                <GradientStop Color="#4B3A67" Offset="0.0"/> 
+                <GradientStop Color="#3A2E59" Offset="0.5"/> 
+                <GradientStop Color="#2B3A55" Offset="1.0"/> 
             </LinearGradientBrush>
         </Grid.Background>
         <TextBlock Text="Create an account"
