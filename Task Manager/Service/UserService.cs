@@ -2,6 +2,7 @@
 
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Task_Manager.Service;
 using Task_Manager.Repository;
@@ -46,22 +47,38 @@ public class UserService
             
     }
 
-
-
-    public async Task updateUser(User user)
+    public async Task<string> updateUserPassword(string mail, string password)
     {
-        List<string> errors = await _userValidation.Validate(user);
-        if (errors.Any())
+        
+        var user = await _userRepository.ReturnUser(mail);
+
+        if (user == null)
         {
-            foreach (var e in errors)
-            {
-                Console.WriteLine(e);
-            }
+            return "User not found";
         }
-        else
+
+        string passwordValidation = _userValidation.returnPasswordUpdate(password);
+        if (passwordValidation.IsNullOrEmpty())
         {
-            _userRepository.UpdateUserAsync(user);
+            var cryptPassword = BCrypt.HashPassword(password);
+            user.password = cryptPassword;
+            await _userRepository.UpdateUserAsync(user);
+            return "Password successfully updated";
         }
+        return passwordValidation;
+    }
+
+
+
+    public async Task<string> checkForUserMail(string Mail)
+    {
+        string error = await  _userValidation.returnEmailExists(Mail);
+        if (error.IsNullOrEmpty())
+        {
+            return "Email doesn't exist";
+        }
+        
+        return error;
     }
 
     public async Task<string> loginUser(string mail, string password)

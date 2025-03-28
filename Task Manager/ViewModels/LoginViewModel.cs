@@ -118,15 +118,7 @@ namespace Task_Manager
 
         public async Task LoginUser()
         {  
-            ValidateEmail();
-            ValidatePassword();
-
-            if (HasErrors)
-            {
-                MessageBox.Show("Please fix validation errors!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
+            
             string result = await _userService.loginUser(Email, Password);
             if (result == "User successfully logged in")
             {

@@ -21,18 +21,10 @@ public partial class SignUpWindow : Window
     private async void SignUpButton_Click(object sender, RoutedEventArgs e)
     {
         var viewModel = (SignUpViewModel)this.DataContext;
-
-        if (viewModel == null)
-        {
-            MessageBox.Show("Unexpected error: ViewModel is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
         
         viewModel.ValidateUsername();
         viewModel.ValidateEmail();
         viewModel.ValidatePhoneNumber();
-        viewModel.ValidatePasswords();
-
         
         if (viewModel.HasErrors)
         {

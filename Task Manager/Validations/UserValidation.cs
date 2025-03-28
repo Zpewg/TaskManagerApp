@@ -94,6 +94,17 @@ public class UserValidation
 
     }
 
+    public async Task<string> returnEmailExists(string email)
+    {
+        users = await _userRepository.GetUsersAsync();
+        if (users.Where(u => u.email.Equals(email)).Count() > 0)
+        {
+            return "Email exists!";
+        }
+     
+        return string.Empty;
+    }
+
     public string returnPasswordUpdate(string password)
     {
         if (!regexPassword.IsMatch(password))
