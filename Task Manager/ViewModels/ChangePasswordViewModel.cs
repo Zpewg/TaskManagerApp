@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using Task_Manager.Service;
 
 namespace Task_Manager;
@@ -60,7 +61,11 @@ public class ChangePasswordViewModel
 
     public async Task<bool> changeUserPassword()
     {
-        
+        string error = ValidatePasswords();
+        if (error != null)
+        {
+           MessageBox.Show(error);
+        }
         string result = await _userService.updateUserPassword(_email, Password);
         if (result == "Password successfully updated")
         {

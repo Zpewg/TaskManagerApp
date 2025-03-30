@@ -20,7 +20,8 @@ public class UserRepository
     {
         return await _context.Users.ToListAsync();
     }
-
+    
+    
     public async Task AddUserAsync(User user)
     {
         await _context.Users.AddAsync(user);

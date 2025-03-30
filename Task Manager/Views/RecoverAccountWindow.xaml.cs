@@ -22,13 +22,7 @@ public partial class RecoverAccountWindow
         
         var viewModel = (RecoverAccountViewModel)this.DataContext;
         var changePasswordWindow = new ChangePasswordWindow(viewModel.Email);
-        viewModel.ValidateEmail();
-        
-        if (viewModel.HasErrors)
-        {
-            MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
+       
 
         if (await viewModel.RecoverAccount())
         {

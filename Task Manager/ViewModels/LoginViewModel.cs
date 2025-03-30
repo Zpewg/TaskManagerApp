@@ -98,7 +98,7 @@ namespace Task_Manager
             {
                 RemoveError("Email");
             }
-            Console.WriteLine($"Email validation - Errors: {string.Join(", ", _errors.ContainsKey("Email") ? _errors["Email"] : new List<string>())}");
+           
         }
 
         public void ValidatePassword()
@@ -122,6 +122,15 @@ namespace Task_Manager
 
         public async Task<User> LoginUser()
         {  
+            ValidateEmail();
+            ValidatePassword();
+            
+            if (HasErrors)
+            {
+                MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          
+                return null;
+            }
             
             string result = await _userService.loginUser(Email, Password);
             if (result == "User successfully logged in")

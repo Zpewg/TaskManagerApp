@@ -1,20 +1,34 @@
-﻿namespace Task_Manager.Service;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Validations;
+
+namespace Task_Manager.Service;
 using Task_Manager.Repository;
 using Task_Manager.Entities;
 
 public class UserTasksService
 {
     private readonly UserTasksRepository _userTasks;
+    private readonly UserTasksValidation _userTasksValidation = App.ServiceProvider.GetRequiredService<UserTasksValidation>();
+    
 
     public UserTasksService(UserTasksRepository userTasks)
     {
         _userTasks = userTasks;
     }
 
-    public async Task CreateUserTask(UserTasks userTasks)
+    public async Task<List<string>> CreateUserTask(UserTasks userTasks)
     {
-        await _userTasks.AddUserTask(userTasks);
+        List<string> error = await _userTasksValidation.ValidateUserTask(userTasks);
+        if (!error.Any())
+        {
+            await _userTasks.AddUserTask(userTasks);
+            return error;
+        }
+
+        return error;
+
     }
+    
 
     public async Task<string> DeleteUserTask(string nameOfTaskName)
     {

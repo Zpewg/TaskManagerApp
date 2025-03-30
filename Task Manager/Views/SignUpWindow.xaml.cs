@@ -21,27 +21,9 @@ public partial class SignUpWindow : Window
     private async void SignUpButton_Click(object sender, RoutedEventArgs e)
     {
         var viewModel = (SignUpViewModel)this.DataContext;
+
+        viewModel.RegisterUser();
         
-        viewModel.ValidateUsername();
-        viewModel.ValidateEmail();
-        viewModel.ValidatePhoneNumber();
-        
-        if (viewModel.HasErrors)
-        {
-            MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-        
-        string passwordValidation = viewModel.ValidatePasswords();
-        if (passwordValidation == "valid")
-        {
-          await viewModel.RegisterUser();
-          this.Close();
-        }
-        else
-        {
-            MessageBox.Show(passwordValidation, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
         
     }
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

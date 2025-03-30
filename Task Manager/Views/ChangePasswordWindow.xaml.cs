@@ -20,14 +20,6 @@ public partial class ChangePasswordWindow : Window
    
         var viewModel = (ChangePasswordViewModel)this.DataContext;
         
-        string error = viewModel.ValidatePasswords();
-
-       
-        if (error == "Passwords do not match!")
-        {
-            MessageBox.Show(error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        
         if (await viewModel.changeUserPassword())
         {
             MessageBox.Show("Password changed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

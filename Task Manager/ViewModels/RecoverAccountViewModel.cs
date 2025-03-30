@@ -84,7 +84,11 @@ public class RecoverAccountViewModel
 
     public async Task<bool> RecoverAccount()
     {
-        
+        ValidateEmail();
+        if (HasErrors)
+        {
+            MessageBox.Show("All fields must be filled.");
+        }
         string errorMessage = await _userService.checkForUserMail(Email);
         if (errorMessage == "Email doesn't exist")
         {

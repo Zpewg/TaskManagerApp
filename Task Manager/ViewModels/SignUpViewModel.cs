@@ -181,12 +181,20 @@ namespace Task_Manager
 
         public async Task RegisterUser()
         {
-            if (HasErrors || ValidatePasswords() != "valid")
+            ValidateUsername();
+            ValidateEmail();
+            ValidatePhoneNumber();
+            if (HasErrors )
             {
-                MessageBox.Show("Please fix validation errors!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("All fields must be filled", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            
+
+            if (ValidatePasswords() != "valid")
+            {
+                MessageBox.Show("Passwords do not match", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             User newUser =  new User(Username, Email, Password, PhoneNumber);
             

@@ -14,7 +14,7 @@ public class UserTasks
        [Column("id_user")]
        public int idUser {get; set; }
        [Column("description")]
-       public string userTaskCol { get; set; }
+       public string? userTaskCol { get; set; }
        [Column("date_of_task")]
        [Required]
        public DateOnly date { get; set; }
@@ -25,6 +25,18 @@ public class UserTasks
        [Column("name_of_task", TypeName = "varchar(15)")]
        [Required]
        public string nameOfTask  { get; set; }
+       
+       [NotMapped]
+       public string TaskName => nameOfTask;
+
+       [NotMapped]
+       public string Description => userTaskCol ?? ""; // Evită null
+
+       [NotMapped]
+       public string DueDateFormatted => date.ToString("yyyy-MM-dd");
+       
+       [NotMapped]
+       public string DueTimeFormatted => time.ToString("hh:mm tt");
        
        public UserTasks(){}
 

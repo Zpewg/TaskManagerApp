@@ -37,9 +37,17 @@ namespace Task_Manager
             serviceCollection.AddScoped<TaskJournalService>();
             serviceCollection.AddScoped<UserTasksService>();
             serviceCollection.AddScoped<UserValidation>();
+            serviceCollection.AddScoped<UserTasksValidation>();
             serviceCollection.AddScoped<SignUpViewModel>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
+           
+            
+            var context = ServiceProvider.GetRequiredService<MyAppDbContext>();
+            context.Database.Migrate(); // Aplica migrarea la runtime
+            
             base.OnStartup(e);
+            
+            
         }
 
 

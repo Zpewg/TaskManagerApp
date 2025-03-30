@@ -21,23 +21,6 @@ public partial class LoginWindow : Window
     {
         var viewModel = (LoginViewModel)this.DataContext;
         
-        if (viewModel == null)
-        {
-            MessageBox.Show("Unexpected error: ViewModel is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-
-       
-        viewModel.ValidateEmail();
-        viewModel.ValidatePassword();
-        
-        
-        if (viewModel.HasErrors)
-        {
-            MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-
         User user = await viewModel.LoginUser();
        
         if (user != null)
@@ -46,11 +29,6 @@ public partial class LoginWindow : Window
             var tasksWindow = new TasksWindow(user);
             tasksWindow.Show();
             this.Close();
-        }
-
-        if (user is null)
-        {
-            MessageBox.Show("Unexpected error: User is null!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

@@ -17,6 +17,11 @@ public class UserTasksRepository
         return await _context.UserTasks.ToListAsync();
     }
 
+    public async Task<List<UserTasks>> GetUserTasksByUserId(int userId)
+    {
+        return await _context.UserTasks.Where(t=> t.idUser == userId).ToListAsync();
+    }
+
     public async Task AddUserTask(UserTasks userTasks)
     {
         await _context.UserTasks.AddAsync(userTasks);

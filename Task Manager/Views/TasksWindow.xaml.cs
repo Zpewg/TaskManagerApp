@@ -1,7 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Extensions.DependencyInjection;
 using Task_Manager.Entities;
+using Task_Manager.Repository;
+using Task_Manager.Service;
+
 
 namespace Task_Manager.Views;
 
@@ -11,7 +15,7 @@ public partial class TasksWindow : Window
     public TasksWindow(User user)
     {
         InitializeComponent();
-    
+      
         AddTaskButton.Content = new TextBlock
         {
             Text = "Add task +",
@@ -32,8 +36,25 @@ public partial class TasksWindow : Window
             AddTaskButton.Background = Brushes.White;
             ((TextBlock)AddTaskButton.Content).Foreground = Brushes.Black;
         };
-        this.DataContext = user;
+        var userTasksService = App.ServiceProvider.GetRequiredService<UserTasksService>();
+        var userTasksRepository = App.ServiceProvider.GetRequiredService<UserTasksRepository>();
+        this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
+      
+        
     }
+
+    private void AddTaskButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        AddTaskPopup.IsOpen = true;
+    }
+
+    private async void SaveTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+        await viewModel.CreateTask();
+        AddTaskPopup.IsOpen = false;
+    }
+
 
 }
     

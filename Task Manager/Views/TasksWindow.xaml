@@ -4,10 +4,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Task_Manager.Views"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="TasksWindow"
         WindowState="Maximized"
         Width="800" Height="450">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="SortedTasks" Source="{Binding Tasks}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="date" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
 
     <Grid>
         <!-- Background -->
@@ -19,22 +28,76 @@
             </LinearGradientBrush>
         </Grid.Background>
         
-        
-        <TextBlock Text="{Binding name, StringFormat='Welcome, {0}'}" 
+        <TextBlock Text="{Binding WelcomeMessage}" 
                    FontSize="14" FontWeight="Bold" Foreground="White"
                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,20,0,0"/>
 
-     
+        <!-- Border for task display -->
         <Border CornerRadius="15"
                 BorderBrush="White" BorderThickness="2"
                 Padding="30" Margin="100"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#5A4872" Offset="0.0"/>
+                    <GradientStop Color="#3E2F5B" Offset="0.5"/>
+                    <GradientStop Color="#2B3A55" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
+                
+                <!-- Sticky Notes Container -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Source={StaticResource SortedTasks}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FFD700" Padding="10" CornerRadius="10" Margin="10">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding TaskName}" FontSize="16" FontWeight="Bold" Foreground="Black"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="14" Foreground="Black"/>
+                                        <TextBlock Text="{Binding date}" FontSize="12" Foreground="Black"/>
+                                        <TextBlock Text="{Binding time}" FontSize="12" Foreground="Black"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                
+                <!-- Popup for adding a new task -->
+                <Popup x:Name="AddTaskPopup" StaysOpen="False" Placement="MousePoint">
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#4B3A67" Offset="0.0"/>
+                                <GradientStop Color="#4B0082" Offset="0.5"/>
+                                <GradientStop Color="#2B3A55" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <StackPanel Width="300">
+                            <TextBlock Text="Add New Task" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                            <TextBlock Text="Task Name:" Foreground="White"/>
+                            <TextBox x:Name="TaskNameTextBox" Width="250" Margin="0,5,0,10" Text="{Binding TaskName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Text="Description:" Foreground="White"/>
+                            <TextBox x:Name="DescriptionTextBox" Width="250" Margin="0,5,0,10" Text="{Binding Description}"/>
+                            <TextBlock Text="Due Date:" Foreground="White"/>
+                            <DatePicker x:Name="TaskDatePicker" Width="250" Margin="0,5,0,10" Text="{Binding DueDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <TextBlock Text="Due Time (HH:MM):" Foreground="White"/>
+                            <TextBox x:Name="TaskTimeTextBox" Width="250" Margin="0,5,0,10" Text="{Binding TimeInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <Button Content="Save Task" Width="250" Background="LightBlue" Click="SaveTaskButton_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+                
                 <!-- "+" Button -->
                 <Button x:Name="AddTaskButton"
                         Style="{StaticResource RoundedButton}" 
@@ -42,7 +105,8 @@
                         FontSize="14" FontWeight="Bold"
                         Padding="12,4"
                         VerticalAlignment="Top" HorizontalAlignment="Right"
-                        Margin="0"/>
+                        Margin="0"
+                        Click="AddTaskButton_OnClick"/>
             </Grid>
         </Border>
     </Grid>
