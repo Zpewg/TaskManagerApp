@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 using Task_Manager.Entities;
 using Task_Manager.Repository;
 using Task_Manager.Service;
+using CommunityToolkit.Mvvm.Input;
 
 
 namespace Task_Manager;
@@ -14,12 +16,17 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     private DateOnly _dueDate;
     private string _timeInput;
     private string _description;
+    private UserTasks _selectedTask; 
+    
     
     private readonly UserTasksService _userTasksService;
     private readonly UserTasksRepository _userTasksRepository;
 
  
     private User _user;
+    
+    public ICommand EditTaskCommand { get; }
+    public ICommand DeleteTaskCommand { get; }
 
     public User User
     {
@@ -31,6 +38,12 @@ public class TasksWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(WelcomeMessage)); 
         }
     }
+
+    public UserTasks SelectedTask
+    {
+        get => _selectedTask;
+        set{_selectedTask = value; OnPropertyChanged(nameof(SelectedTask));}
+    }
     public TasksWindowViewModel(UserTasksService userTasksService, User user, UserTasksRepository userTasksRepository)
     {
         _userTasksService = userTasksService;
@@ -40,8 +53,12 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         _userTasksRepository = userTasksRepository;
 
        BeforeLoadTasks(user);
+       
+       EditTaskCommand = new RelayCommand(EditTask, CanEditOrDelete);
+       DeleteTaskCommand = new RelayCommand(DeleteTask, CanEditOrDelete);
 
     }
+    private bool CanEditOrDelete() => SelectedTask != null;
     public string WelcomeMessage => $"Welcome, {User?.name}";
     public string TaskName
     {
@@ -53,6 +70,17 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     {
         get => _dueDate;
         set { _dueDate = value; OnPropertyChanged(nameof(DueDate)); }
+    }
+    public string DueDateFormatted
+    {
+        get => DueDate.ToString("yyyy-MM-dd");  // Convertește DateOnly într-un string
+        set
+        {
+            if (DateOnly.TryParse(value, out DateOnly result))
+            {
+                DueDate = result;  // Convertește string în DateOnly
+            }
+        }
     }
 
     public string TimeInput
@@ -75,7 +103,23 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     
 
     
+    private void EditTask()
+    {
+        // Deschide un popup sau setează un dialog pentru editare
+        TaskName = SelectedTask.TaskName;
+        Description = SelectedTask.Description;
+        DueDateFormatted = SelectedTask.DueDateFormatted;
+        TimeInput = SelectedTask.DueTimeFormatted;
+        
+    }
 
+    private void DeleteTask()
+    {
+        if (SelectedTask != null)
+        {
+            Tasks.Remove(SelectedTask);
+        }
+    }
 
     private void AddError(string propertyName, string errorMessage)
     {

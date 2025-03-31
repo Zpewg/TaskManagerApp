@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using Task_Manager.Entities;
@@ -54,6 +55,17 @@ public partial class TasksWindow : Window
         await viewModel.CreateTask();
         AddTaskPopup.IsOpen = false;
     }
+
+    private  void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private async void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        
+    }
+  
 
 
 }

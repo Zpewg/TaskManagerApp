@@ -11,9 +11,11 @@
         Width="800" Height="450">
 
     <Window.Resources>
+        <local:NullToBoolConverter x:Key="NullToBoolConverter" />
+
         <CollectionViewSource x:Key="SortedTasks" Source="{Binding Tasks}">
             <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="date" Direction="Ascending"/>
+                <componentModel:SortDescription PropertyName="date" Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Window.Resources>
@@ -52,13 +54,11 @@
                 
                 <!-- Sticky Notes Container -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Source={StaticResource SortedTasks}}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel IsItemsHost="True" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
+                    <ListBox ItemsSource="{Binding Source={StaticResource SortedTasks}}" 
+                             SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                             BorderThickness="0"
+                             Background="Transparent">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="#FFD700" Padding="10" CornerRadius="10" Margin="10">
                                     <StackPanel>
@@ -69,11 +69,11 @@
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </ScrollViewer>
-                
-                <!-- Popup for adding a new task -->
+
+                <!-- Popup for Adding a New Task -->
                 <Popup x:Name="AddTaskPopup" StaysOpen="False" Placement="MousePoint">
                     <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
                         <Border.Background>
@@ -97,8 +97,30 @@
                         </StackPanel>
                     </Border>
                 </Popup>
-                
-                <!-- "+" Button -->
+
+                <!-- Popup for Edit/Delete Task -->
+                <Popup x:Name="TaskActionPopup" StaysOpen="False" Placement="MousePoint" IsOpen="{Binding IsPopupOpen}">
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#4B3A67" Offset="0.0"/>
+                                <GradientStop Color="#4B0082" Offset="0.5"/>
+                                <GradientStop Color="#2B3A55" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <StackPanel Width="300">
+                            <Button Content="Save Task" Width="250" Background="LightBlue" Click="SaveTaskButton_Click"/>
+                            <Button Content="Edit Task" Width="100" Margin="5" 
+                                    Command="{Binding EditTaskCommand}" 
+                                    IsEnabled="{Binding SelectedTask, Converter={StaticResource NullToBoolConverter}}"/>
+                            <Button Content="Delete Task" Width="100" Margin="5" Background="Red"
+                                    Command="{Binding DeleteTaskCommand}" 
+                                    IsEnabled="{Binding SelectedTask, Converter={StaticResource NullToBoolConverter}}"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <!-- "+" Button to add a task -->
                 <Button x:Name="AddTaskButton"
                         Style="{StaticResource RoundedButton}" 
                         Content="Add task +" 
