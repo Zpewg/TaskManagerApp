@@ -12,11 +12,11 @@ namespace Task_Manager.Views;
 
 public partial class TasksWindow : Window
 {
-    
+
     public TasksWindow(User user)
     {
         InitializeComponent();
-      
+
         AddTaskButton.Content = new TextBlock
         {
             Text = "Add task +",
@@ -39,9 +39,9 @@ public partial class TasksWindow : Window
         };
         var userTasksService = App.ServiceProvider.GetRequiredService<UserTasksService>();
         var userTasksRepository = App.ServiceProvider.GetRequiredService<UserTasksRepository>();
-        this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
-      
-        
+        this.DataContext = new TasksWindowViewModel(userTasksService, user, userTasksRepository);
+        this.PreviewMouseDown += TasksWindow_PreviewMouseDown;
+
     }
 
     private void AddTaskButton_OnClick(object sender, RoutedEventArgs e)
@@ -56,17 +56,68 @@ public partial class TasksWindow : Window
         AddTaskPopup.IsOpen = false;
     }
 
-    private  void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+    private void EditButton_Click(object sender, RoutedEventArgs e)
     {
-        
+        EditTaskPopUp.IsOpen = true;
     }
+
+    private async void EditTask_OnClick(object sender, RoutedEventArgs e)
+    {
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+        await viewModel.EditTask();
+    }
+
+    private async void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (TaskActionPopup == null ) return;
+
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+        var listBox = sender as ListBox;
+
+        viewModel.SelectedTask = (UserTasks)listBox.SelectedItem;
+    
+        var selectedItem =
+            listBox?.ItemContainerGenerator.ContainerFromItem(viewModel.SelectedTask) as FrameworkElement;
+
+
+        if (selectedItem != null)
+        {
+            TaskActionPopup.PlacementTarget = selectedItem;
+            TaskActionPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            TaskActionPopup.IsOpen = true;
+        }
+        
+            TaskActionPopup.Closed += (s, args) =>
+            {
+                listBox.SelectedItem = null; 
+                
+            };
+    }
+
+
+    private void TasksWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (TaskActionPopup.IsOpen && !TaskActionPopup.IsMouseOver)
+        {
+            TaskActionPopup.IsOpen = false;
+        }
+
+        if (AddTaskPopup.IsOpen && !AddTaskPopup.IsMouseOver)
+        {
+            AddTaskPopup.IsOpen = false;
+        }
+    }
+
 
     private async void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
     {
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+
+        await viewModel.DeleteTask();
+        
+        TaskActionPopup.IsOpen = false;
         
     }
-  
-
 
 }
     

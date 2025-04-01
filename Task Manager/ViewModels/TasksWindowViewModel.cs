@@ -25,8 +25,6 @@ public class TasksWindowViewModel : INotifyPropertyChanged
  
     private User _user;
     
-    public ICommand EditTaskCommand { get; }
-    public ICommand DeleteTaskCommand { get; }
 
     public User User
     {
@@ -39,11 +37,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public UserTasks SelectedTask
-    {
-        get => _selectedTask;
-        set{_selectedTask = value; OnPropertyChanged(nameof(SelectedTask));}
-    }
+   
     public TasksWindowViewModel(UserTasksService userTasksService, User user, UserTasksRepository userTasksRepository)
     {
         _userTasksService = userTasksService;
@@ -54,11 +48,10 @@ public class TasksWindowViewModel : INotifyPropertyChanged
 
        BeforeLoadTasks(user);
        
-       EditTaskCommand = new RelayCommand(EditTask, CanEditOrDelete);
-       DeleteTaskCommand = new RelayCommand(DeleteTask, CanEditOrDelete);
+     
 
     }
-    private bool CanEditOrDelete() => SelectedTask != null;
+    
     public string WelcomeMessage => $"Welcome, {User?.name}";
     public string TaskName
     {
@@ -94,6 +87,12 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         get => _description;
         set { _description = value; }
     }
+
+    public UserTasks SelectedTask
+    {
+        get => _selectedTask;
+        set { _selectedTask = value; OnPropertyChanged(nameof(SelectedTask)); }
+    }
     private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -103,23 +102,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     
 
     
-    private void EditTask()
-    {
-        // Deschide un popup sau setează un dialog pentru editare
-        TaskName = SelectedTask.TaskName;
-        Description = SelectedTask.Description;
-        DueDateFormatted = SelectedTask.DueDateFormatted;
-        TimeInput = SelectedTask.DueTimeFormatted;
-        
-    }
 
-    private void DeleteTask()
-    {
-        if (SelectedTask != null)
-        {
-            Tasks.Remove(SelectedTask);
-        }
-    }
 
     private void AddError(string propertyName, string errorMessage)
     {
@@ -203,7 +186,6 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     {
         var userTasks = await _userTasksRepository.GetUserTasksByUserId(User.idUser);
         Tasks.Clear();
-        Console.WriteLine("Metoda se apeleaza" + User.idUser );
         foreach (var task in userTasks)
         {
             Tasks.Add(task);
@@ -236,5 +218,30 @@ public class TasksWindowViewModel : INotifyPropertyChanged
        Tasks.Add(userTasks);
        OnPropertyChanged(nameof(Tasks));
        MessageBox.Show(userTasks.idUser + " has been created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+    public async Task EditTask()
+    {
+        var selectedTask = SelectedTask;
+        TimeOnly timeOnly = TimeOnly.Parse(TimeInput);
+        DateOnly dateOnly = DateOnly.Parse(selectedTask.DueDateFormatted);
+        Console.WriteLine(selectedTask.ToString());
+        UserTasks userTasks = new UserTasks(User.idUser, selectedTask.TaskName, selectedTask.Description, dateOnly, timeOnly);
+        List<string> error = await _userTasksService.UpdateUserTask(userTasks);
+        if (error.Any())
+        {
+            string errorMessage = string.Join("\n", error);
+            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        Tasks.Add(userTasks);
+        OnPropertyChanged(nameof(Tasks));
+        MessageBox.Show("Task has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    public async Task DeleteTask()
+    {
+        var selectedTask = SelectedTask;
+        Tasks.Remove(selectedTask);
+        _userTasksRepository.DeleteUserTask(selectedTask);
     }
 }

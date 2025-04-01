@@ -29,21 +29,18 @@ public class UserTasksService
 
     }
     
+    
 
-    public async Task<string> DeleteUserTask(string nameOfTaskName)
+    public async Task<List<string>> UpdateUserTask(UserTasks userTasks)
     {
-        int? id = await _userTasks.FindUserByTaskName(nameOfTaskName);
-        if (id.HasValue)
+        List<string> error = await _userTasksValidation.ValidateUserTask(userTasks);
+        if (!error.Any())
         {
-            await _userTasks.DeleteUserTask(id.Value);
-            return "Task successfully deleted";
+            await _userTasks.UpdateUserTask(userTasks);
+            return error;
         }
-        return "Task not found";
-    }
-
-    public async Task UpdateUserTask(UserTasks userTasks)
-    {
-        await _userTasks.UpdateUserTask(userTasks);
+        return error;
+        
     }
 
     public async Task<List<UserTasks>> GetUserTasks()
