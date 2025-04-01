@@ -29,17 +29,7 @@ public class UserTasksService
 
     }
     
-
-    public async Task<string> DeleteUserTask(string nameOfTaskName)
-    {
-        int? id = await _userTasks.FindUserByTaskName(nameOfTaskName);
-        if (id.HasValue)
-        {
-            await _userTasks.DeleteUserTask(id.Value);
-            return "Task successfully deleted";
-        }
-        return "Task not found";
-    }
+    
 
     public async Task UpdateUserTask(UserTasks userTasks)
     {

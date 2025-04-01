@@ -12,7 +12,7 @@ namespace Task_Manager.Views;
 
 public partial class TasksWindow : Window
 {
-    
+
     public TasksWindow(User user)
     {
         InitializeComponent();
@@ -40,7 +40,7 @@ public partial class TasksWindow : Window
         var userTasksService = App.ServiceProvider.GetRequiredService<UserTasksService>();
         var userTasksRepository = App.ServiceProvider.GetRequiredService<UserTasksRepository>();
         this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
-      
+        this.PreviewMouseDown += TasksWindow_PreviewMouseDown;
         
     }
 
@@ -56,17 +56,60 @@ public partial class TasksWindow : Window
         AddTaskPopup.IsOpen = false;
     }
 
-    private  void SaveChangesButton_Click(object sender, RoutedEventArgs e)
+    private  void EditButton_Click(object sender, RoutedEventArgs e)
     {
         
     }
+    private void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (TaskActionPopup == null || e.AddedItems.Count == 0) return;
 
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+        viewModel.SelectedTask = (UserTasks)e.AddedItems[0];
+
+        var listBox = sender as ListBox;
+        var selectedItem = listBox.ItemContainerGenerator.ContainerFromItem(viewModel.SelectedTask) as ListBoxItem;
+        if (selectedItem != null)
+        {
+            TaskActionPopup.PlacementTarget = selectedItem;
+            TaskActionPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Right;
+            TaskActionPopup.IsOpen = true;
+        }
+    }
+    private void TasksWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (TaskActionPopup.IsOpen)
+        {
+            var popupChild = TaskActionPopup.Child;
+            if (popupChild != null)
+            {
+                if (!popupChild.IsMouseOver)
+                {
+                    TaskActionPopup.IsOpen = false;
+                }
+            }
+        }
+
+        if (AddTaskPopup.IsOpen)
+        {
+            var popupChild = AddTaskPopup.Child;
+            if (popupChild != null)
+            {
+                if (!popupChild.IsMouseOver)
+                {
+                    AddTaskPopup.IsOpen = false;
+                }
+            }
+        }
+    }
+
+    
     private async void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
     {
-        
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+        Console.WriteLine(viewModel.SelectedTask.ToString());
+        await viewModel.DeleteTask();
     }
-  
-
-
+    
 }
     

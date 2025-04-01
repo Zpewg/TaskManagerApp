@@ -34,9 +34,9 @@ public class UserTasksRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteUserTask(int id)
+    public async Task DeleteUserTask(UserTasks userTasks)
     {
-        var userTasks = await _context.UserTasks.FindAsync(id);
+        
          _context.UserTasks.Remove(userTasks);
         await _context.SaveChangesAsync();
     }
