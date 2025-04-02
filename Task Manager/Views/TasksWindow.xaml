@@ -53,7 +53,7 @@
                 <!-- Sticky Notes Container -->
                 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <ListBox x:Name= "TaskListBox" ItemsSource="{Binding  Source={StaticResource SortedTasks}}" 
+                    <ListBox ItemsSource="{Binding Source={StaticResource SortedTasks}}" 
                              SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
                              SelectionChanged="TaskListBox_SelectionChanged"
                              BorderThickness="0"
@@ -99,7 +99,7 @@
                 </Popup>
 
                 <!-- Popup for Edit/Delete Task -->
-                <Popup x:Name="TaskActionPopup" StaysOpen="False" Placement="Relative">
+                <Popup x:Name="TaskActionPopup" StaysOpen="False" Placement="MousePoint">
                     <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -113,26 +113,6 @@
                                     Click="EditButton_Click" />
                             <Button Content="Delete Task" Width="100" Margin="5" Background="Red"
                                     Click="DeleteTaskButton_Click" />
-                        </StackPanel>
-                    </Border>
-                </Popup>
-                
-                <Popup x:Name="EditTaskPopUp" StaysOpen="False" Placement="MousePoint">
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#4B3A67" Offset="0.0"/>
-                                <GradientStop Color="#4B0082" Offset="0.5"/>
-                                <GradientStop Color="#2B3A55" Offset="1.0"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <StackPanel Width="300">
-                            <TextBlock Text="Edit date/hour of task: " FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
-                            <TextBlock Text="Due Date:" Foreground="White"/>
-                            <DatePicker x:Name="TaskDatePickerChanged" Width="250" Margin="0,5,0,10" Text="{Binding DueDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            <TextBlock Text="Due Time (HH:MM):" Foreground="White"/>
-                            <TextBox x:Name="TaskTimeTextBoxChanged" Width="250" Margin="0,5,0,10" Text="{Binding TimeInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            <Button Content="Edit" Width="250" Background="LightBlue" Click="EditTask_OnClick"/>
                         </StackPanel>
                     </Border>
                 </Popup>

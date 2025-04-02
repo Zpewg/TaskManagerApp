@@ -31,16 +31,9 @@ public class UserTasksService
     
     
 
-    public async Task<List<string>> UpdateUserTask(UserTasks userTasks)
+    public async Task UpdateUserTask(UserTasks userTasks)
     {
-        List<string> error = await _userTasksValidation.ValidateUserTask(userTasks);
-        if (!error.Any())
-        {
-            await _userTasks.UpdateUserTask(userTasks);
-            return error;
-        }
-        return error;
-        
+        await _userTasks.UpdateUserTask(userTasks);
     }
 
     public async Task<List<UserTasks>> GetUserTasks()

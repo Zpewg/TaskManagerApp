@@ -102,7 +102,17 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     
 
     
+    private void EditTask()
+    {
 
+    }
+
+    public async Task DeleteTask()
+    {
+        var selectedTask = SelectedTask;
+        Tasks.Remove(selectedTask);
+        _userTasksRepository.DeleteUserTask(selectedTask);
+    }
 
     private void AddError(string propertyName, string errorMessage)
     {
@@ -218,33 +228,5 @@ public class TasksWindowViewModel : INotifyPropertyChanged
        Tasks.Add(userTasks);
        OnPropertyChanged(nameof(Tasks));
        MessageBox.Show(userTasks.idUser + " has been created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-    public async Task EditTask()
-    {
-        var selectedTask = SelectedTask;
-        selectedTask.date = DueDate;
-        
-        TimeOnly timeOnly = TimeOnly.Parse(TimeInput);
-        selectedTask.time = timeOnly;
-        
-        
-        List<string> error = await _userTasksService.UpdateUserTask(selectedTask);
-        if (error.Any())
-        {
-            string errorMessage = string.Join("\n", error);
-            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-        
-        OnPropertyChanged(nameof(Tasks));
-        
-        MessageBox.Show("Task has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    public async Task DeleteTask()
-    {
-        var selectedTask = SelectedTask;
-        Tasks.Remove(selectedTask);
-        _userTasksRepository.DeleteUserTask(selectedTask);
     }
 }
