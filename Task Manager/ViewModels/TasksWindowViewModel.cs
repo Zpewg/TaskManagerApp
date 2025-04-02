@@ -66,12 +66,12 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     }
     public string DueDateFormatted
     {
-        get => DueDate.ToString("yyyy-MM-dd");  // Convertește DateOnly într-un string
+        get => DueDate.ToString("yyyy-MM-dd");  
         set
         {
             if (DateOnly.TryParse(value, out DateOnly result))
             {
-                DueDate = result;  // Convertește string în DateOnly
+                DueDate = result;  
             }
         }
     }
@@ -98,21 +98,19 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler PropertyChanged;
 
     public bool HasErrors => _errors.Any();
-    public ObservableCollection<UserTasks> Tasks { get; set; } = new ObservableCollection<UserTasks>();
+    private ObservableCollection<UserTasks> _tasks = new ObservableCollection<UserTasks>();
     
 
-    
-    private void EditTask()
+    public ObservableCollection<UserTasks> Tasks
     {
-
+        get => _tasks;
+        set
+        {
+            _tasks = value;
+            OnPropertyChanged(nameof(Tasks));
+        }
     }
 
-    public async Task DeleteTask()
-    {
-        var selectedTask = SelectedTask;
-        Tasks.Remove(selectedTask);
-        _userTasksRepository.DeleteUserTask(selectedTask);
-    }
 
     private void AddError(string propertyName, string errorMessage)
     {
@@ -228,5 +226,35 @@ public class TasksWindowViewModel : INotifyPropertyChanged
        Tasks.Add(userTasks);
        OnPropertyChanged(nameof(Tasks));
        MessageBox.Show(userTasks.idUser + " has been created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+    public async Task EditTask()
+    {
+        
+        SelectedTask.DueTimeFormatted = TimeInput;
+        SelectedTask.DueDateFormatted = DueDateFormatted;
+        int index = Tasks.IndexOf(SelectedTask);
+        List<string> error = await _userTasksService.UpdateUserTask(SelectedTask);
+        if (error.Any())
+        {
+            string errorMessage = string.Join("\n", error);
+            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        MessageBox.Show("Task updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        
+        if (index >= 0)
+        {
+            Tasks.RemoveAt(index);
+            Tasks.Insert(index, SelectedTask);
+        }
+        OnPropertyChanged(nameof(Tasks));
+        OnPropertyChanged(nameof(SelectedTask));
+    }
+
+    public async Task DeleteTask()
+    {
+        var selectedTask = SelectedTask;
+        Tasks.Remove(selectedTask);
+        _userTasksRepository.DeleteUserTask(selectedTask);
     }
 }

@@ -58,48 +58,58 @@ public partial class TasksWindow : Window
 
     private  void EditButton_Click(object sender, RoutedEventArgs e)
     {
-        
+        EditTaskPopup.IsOpen = true;
+    }
+
+    private async void EditButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var viewModel = (TasksWindowViewModel)this.DataContext;
+         await viewModel.EditTask();
     }
     private void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (TaskActionPopup == null || e.AddedItems.Count == 0) return;
 
         var viewModel = (TasksWindowViewModel)this.DataContext;
-        viewModel.SelectedTask = (UserTasks)e.AddedItems[0];
-
         var listBox = sender as ListBox;
-        var selectedItem = listBox.ItemContainerGenerator.ContainerFromItem(viewModel.SelectedTask) as ListBoxItem;
+
+     
+        viewModel.SelectedTask = (UserTasks)listBox.SelectedItem;
+
+        var selectedItem =
+            listBox?.ItemContainerGenerator.ContainerFromItem(viewModel.SelectedTask) as FrameworkElement;
+
         if (selectedItem != null)
         {
+          
             TaskActionPopup.PlacementTarget = selectedItem;
-            TaskActionPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Right;
+            TaskActionPopup.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+
+            
             TaskActionPopup.IsOpen = true;
         }
+
+        
+        TaskActionPopup.Closed += (s, args) =>
+        {
+            if (!TaskActionPopup.IsOpen && !EditTaskPopup.IsOpen)
+            {
+                listBox.SelectedItem = null; 
+            }
+        };
+
+        Console.WriteLine(viewModel.SelectedTask?.ToString());
     }
     private void TasksWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (TaskActionPopup.IsOpen)
+        if (TaskActionPopup.IsOpen && !TaskActionPopup.IsMouseOver)
         {
-            var popupChild = TaskActionPopup.Child;
-            if (popupChild != null)
-            {
-                if (!popupChild.IsMouseOver)
-                {
-                    TaskActionPopup.IsOpen = false;
-                }
-            }
+            TaskActionPopup.IsOpen = false;
         }
 
-        if (AddTaskPopup.IsOpen)
+        if (AddTaskPopup.IsOpen && !AddTaskPopup.IsMouseOver)
         {
-            var popupChild = AddTaskPopup.Child;
-            if (popupChild != null)
-            {
-                if (!popupChild.IsMouseOver)
-                {
-                    AddTaskPopup.IsOpen = false;
-                }
-            }
+            AddTaskPopup.IsOpen = false;
         }
     }
 
