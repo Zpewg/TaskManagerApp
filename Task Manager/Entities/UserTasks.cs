@@ -27,16 +27,46 @@ public class UserTasks
        public string nameOfTask  { get; set; }
        
        [NotMapped]
-       public string TaskName => nameOfTask;
+       public string TaskName
+       {
+              get => nameOfTask;
+              set => nameOfTask = value;
+       }
 
        [NotMapped]
-       public string Description => userTaskCol ?? ""; // Evită null
+       public string Description
+       {
+              get => userTaskCol ?? "";
+              set => userTaskCol = value;
+       }
 
        [NotMapped]
-       public string DueDateFormatted => date.ToString("yyyy-MM-dd");
-       
+       public string DueDateFormatted
+       {
+              get => date.ToString("yyyy-MM-dd");
+              set
+              {
+                     if (DateOnly.TryParse(value, out DateOnly parsedDate))
+                     {
+                            date = parsedDate;
+                     }
+              }
+       }
+
        [NotMapped]
-       public string DueTimeFormatted => time.ToString("hh:mm tt");
+       public string DueTimeFormatted
+       {
+              get => time.ToString("hh:mm tt");
+              set
+              {
+                     if (TimeOnly.TryParse(value, out TimeOnly parsedTime))
+                     {
+                            time = parsedTime;
+                     }
+              }
+       }
+
+
        
        public UserTasks(){}
 

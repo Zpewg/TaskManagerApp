@@ -64,10 +64,11 @@ public partial class TasksWindow : Window
     private async void EditTask_OnClick(object sender, RoutedEventArgs e)
     {
         var viewModel = (TasksWindowViewModel)this.DataContext;
+      
         await viewModel.EditTask();
     }
 
-    private async void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (TaskActionPopup == null ) return;
 
@@ -89,7 +90,10 @@ public partial class TasksWindow : Window
         
             TaskActionPopup.Closed += (s, args) =>
             {
-                listBox.SelectedItem = null; 
+                if (!TaskActionPopup.IsOpen && !EditTaskPopUp.IsOpen)
+                {
+                    listBox.SelectedItem = null; 
+                }
                 
             };
     }

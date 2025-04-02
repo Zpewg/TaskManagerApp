@@ -222,19 +222,22 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     public async Task EditTask()
     {
         var selectedTask = SelectedTask;
+        selectedTask.date = DueDate;
+        
         TimeOnly timeOnly = TimeOnly.Parse(TimeInput);
-        DateOnly dateOnly = DateOnly.Parse(selectedTask.DueDateFormatted);
-        Console.WriteLine(selectedTask.ToString());
-        UserTasks userTasks = new UserTasks(User.idUser, selectedTask.TaskName, selectedTask.Description, dateOnly, timeOnly);
-        List<string> error = await _userTasksService.UpdateUserTask(userTasks);
+        selectedTask.time = timeOnly;
+        
+        
+        List<string> error = await _userTasksService.UpdateUserTask(selectedTask);
         if (error.Any())
         {
             string errorMessage = string.Join("\n", error);
             MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-        Tasks.Add(userTasks);
+        
         OnPropertyChanged(nameof(Tasks));
+        
         MessageBox.Show("Task has been updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
