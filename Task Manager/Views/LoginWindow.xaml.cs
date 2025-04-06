@@ -38,4 +38,11 @@ public partial class LoginWindow : Window
         RecoverAccountWindow recoverAccountWindow = new();
         recoverAccountWindow.Show();
     }
+
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        var mainWindow = new MainWindow();
+        mainWindow.Show();
+        this.Close();
+    }
 }

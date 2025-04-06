@@ -65,6 +65,8 @@ public partial class TasksWindow : Window
     {
         var viewModel = (TasksWindowViewModel)this.DataContext;
          await viewModel.EditTask();
+         EditTaskPopup.IsOpen = false;
+         
     }
     private void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -95,10 +97,10 @@ public partial class TasksWindow : Window
             if (!TaskActionPopup.IsOpen && !EditTaskPopup.IsOpen)
             {
                 listBox.SelectedItem = null; 
+                viewModel.SelectedTask = null;
             }
         };
-
-        Console.WriteLine(viewModel.SelectedTask?.ToString());
+        
     }
     private void TasksWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -119,7 +121,22 @@ public partial class TasksWindow : Window
         var viewModel = (TasksWindowViewModel)this.DataContext;
         Console.WriteLine(viewModel.SelectedTask.ToString());
         await viewModel.DeleteTask();
+        EditTaskPopup.IsOpen = false;
     }
-    
+
+    private void LogOutButton_OnClick(object sender, RoutedEventArgs e)
+    {  var mainWindow = new MainWindow();
+        mainWindow.Show();
+        this.Close();
+        
+    }
+
+    public void UserSettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var userSettings = new UserSettingsUserControl();
+
+        UserSettingsContainer.Content = userSettings;
+        UserSettingsContainer.Visibility = Visibility.Visible;
+    }
 }
     

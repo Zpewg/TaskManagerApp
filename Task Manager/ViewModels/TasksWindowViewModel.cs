@@ -21,11 +21,11 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     
     private readonly UserTasksService _userTasksService;
     private readonly UserTasksRepository _userTasksRepository;
-
- 
     private User _user;
     
-
+    private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+    private ObservableCollection<UserTasks> _tasks = new ObservableCollection<UserTasks>();
+    
     public User User
     {
         get => _user;
@@ -48,11 +48,8 @@ public class TasksWindowViewModel : INotifyPropertyChanged
 
        BeforeLoadTasks(user);
        
-     
-
     }
     
-    public string WelcomeMessage => $"Welcome, {User?.name}";
     public string TaskName
     {
         get => _taskName;
@@ -93,14 +90,13 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         get => _selectedTask;
         set { _selectedTask = value; OnPropertyChanged(nameof(SelectedTask)); }
     }
-    private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
-
+    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+    
+    public string WelcomeMessage => $"Welcome, {User?.name}";
     public event PropertyChangedEventHandler PropertyChanged;
 
     public bool HasErrors => _errors.Any();
-    private ObservableCollection<UserTasks> _tasks = new ObservableCollection<UserTasks>();
     
-
     public ObservableCollection<UserTasks> Tasks
     {
         get => _tasks;
@@ -109,6 +105,34 @@ public class TasksWindowViewModel : INotifyPropertyChanged
             _tasks = value;
             OnPropertyChanged(nameof(Tasks));
         }
+    }
+    private void OnErrorsChanged(string propertyName)
+    {
+        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+    }
+
+    
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private async void BeforeLoadTasks(User user)
+    {
+        await LoadTasks(user);
+    }
+    
+    private async Task LoadTasks(User user)
+    {
+        var userTasks = await _userTasksRepository.GetUserTasksByUserId(User.idUser);
+        Tasks.Clear();
+        foreach (var task in userTasks)
+        {
+            Tasks.Add(task);
+            Console.WriteLine(task);
+            
+        }
+        OnPropertyChanged(nameof(Tasks));
     }
 
 
@@ -174,34 +198,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private void OnErrorsChanged(string propertyName)
-    {
-        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    }
 
-    public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private async void BeforeLoadTasks(User user)
-    {
-        await LoadTasks(user);
-    }
-    
-    private async Task LoadTasks(User user)
-    {
-        var userTasks = await _userTasksRepository.GetUserTasksByUserId(User.idUser);
-        Tasks.Clear();
-        foreach (var task in userTasks)
-        {
-            Tasks.Add(task);
-            Console.WriteLine(task);
-            
-        }
-        OnPropertyChanged(nameof(Tasks));
-    }
 
     public async Task CreateTask()
     {
@@ -229,10 +226,16 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     }
     public async Task EditTask()
     {
-        
+        ValidateDueDate();
+        ValidateTimeInput();
+        if (HasErrors)
+        {
+            MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
         SelectedTask.DueTimeFormatted = TimeInput;
         SelectedTask.DueDateFormatted = DueDateFormatted;
-        int index = Tasks.IndexOf(SelectedTask);
+        var index = Tasks.IndexOf(SelectedTask);
         List<string> error = await _userTasksService.UpdateUserTask(SelectedTask);
         if (error.Any())
         {
@@ -242,13 +245,16 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         }
         MessageBox.Show("Task updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         
+       
         if (index >= 0)
         {
-            Tasks.RemoveAt(index);
-            Tasks.Insert(index, SelectedTask);
+        
+            Tasks[index] = SelectedTask;
+        
+            OnPropertyChanged(nameof(Tasks));
         }
-        OnPropertyChanged(nameof(Tasks));
-        OnPropertyChanged(nameof(SelectedTask));
+       OnPropertyChanged(nameof(SelectedTask));
+ 
     }
 
     public async Task DeleteTask()
@@ -257,4 +263,5 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         Tasks.Remove(selectedTask);
         _userTasksRepository.DeleteUserTask(selectedTask);
     }
+    
 }
