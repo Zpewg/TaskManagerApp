@@ -26,6 +26,18 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
     private ObservableCollection<UserTasks> _tasks = new ObservableCollection<UserTasks>();
     
+    public TasksWindowViewModel(UserTasksService userTasksService, User user, UserTasksRepository userTasksRepository)
+    {
+        _userTasksService = userTasksService;
+        
+        _user = user;
+        
+        _userTasksRepository = userTasksRepository;
+
+        BeforeLoadTasks(user);
+       
+    }
+    
     public User User
     {
         get => _user;
@@ -36,19 +48,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(WelcomeMessage)); 
         }
     }
-
-   
-    public TasksWindowViewModel(UserTasksService userTasksService, User user, UserTasksRepository userTasksRepository)
-    {
-        _userTasksService = userTasksService;
-        
-        _user = user;
-        
-        _userTasksRepository = userTasksRepository;
-
-       BeforeLoadTasks(user);
-       
-    }
+    
     
     public string TaskName
     {
@@ -93,6 +93,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
     
     public string WelcomeMessage => $"Welcome, {User?.name}";
+   
     public event PropertyChangedEventHandler PropertyChanged;
 
     public bool HasErrors => _errors.Any();

@@ -41,6 +41,15 @@
                 Height="50"
                 Style="{DynamicResource RoundedButton}"
                 Click="UserSettingsButton_Click"/>
+        <Button Content="Your Journal"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="110, 50, 0, 0"
+                Padding ="7,2"
+                Width="100"
+                Height="50"
+                Style="{DynamicResource RoundedButton}"
+                Click ="UserJournalButton_Click"/>
         <Border CornerRadius="15"
                 BorderBrush="White" BorderThickness="2"
                 Padding="30" Margin="100"

@@ -13,6 +13,7 @@ namespace Task_Manager.Views;
 public partial class TasksWindow : Window
 {
 
+    private User _loggedUser;
     public TasksWindow(User user)
     {
         InitializeComponent();
@@ -41,7 +42,7 @@ public partial class TasksWindow : Window
         var userTasksRepository = App.ServiceProvider.GetRequiredService<UserTasksRepository>();
         this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
         this.PreviewMouseDown += TasksWindow_PreviewMouseDown;
-        
+        _loggedUser = user;
     }
 
     private void AddTaskButton_OnClick(object sender, RoutedEventArgs e)
@@ -137,6 +138,16 @@ public partial class TasksWindow : Window
 
         UserSettingsContainer.Content = userSettings;
         UserSettingsContainer.Visibility = Visibility.Visible;
+    }
+
+    public void UserJournalButton_Click(object sender, RoutedEventArgs e)
+    {
+        var userJournal = new JournalUserControl(_loggedUser);
+
+        UserSettingsContainer.Content = userJournal;
+        UserSettingsContainer.Visibility = Visibility.Visible;
+        
+        
     }
 }
     
