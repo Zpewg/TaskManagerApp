@@ -7,12 +7,8 @@ using Task_Manager.Service;
 
 public class TaskJournalValidation
 {
-    private readonly TaskJournalService _journal;
+   
 
-    public TaskJournalValidation(TaskJournalService journal)
-    {
-        _journal = journal;
-    }
 
     public async Task<List<string>> JournalValidation(TaskJournal journal)
     {

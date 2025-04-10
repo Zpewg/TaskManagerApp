@@ -12,9 +12,9 @@ public class TaskJournalRepository
         _context = context;
     }
 
-    public async Task<List<TaskJournal>> GetTaskJournalsAsync()
+    public async Task<List<TaskJournal>> GetTaskJournalsByUserIdAsync(int userId)
     {
-        return await _context.TaskJournal.ToListAsync();
+        return await _context.TaskJournal.Where(t => t.iduser == userId).ToListAsync();
     }
 
     public async Task AddTaskJournalAsync(TaskJournal taskJournal)

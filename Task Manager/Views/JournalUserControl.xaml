@@ -48,8 +48,28 @@
                   <RowDefinition Height="*"/>
               </Grid.RowDefinitions>
               <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                  <ListBox BorderThickness="0"
-                           Background="Transparent"></ListBox>
+                  <ListBox ItemsSource="{Binding Notes}" 
+                           SelectedItem="{Binding SelectedNote, Mode=TwoWay}" 
+                           BorderThickness="0"
+                           Background="Transparent"
+                           Margin="10">
+                      <ListBox.ItemTemplate>
+                          <DataTemplate>
+                              <Border Background="#FFD700" Padding="10" CornerRadius="10" Margin="5" Width="200">
+                                  <StackPanel>
+                                      <TextBlock Text="{Binding NoteName}" 
+                                                 FontSize="16" FontWeight="Bold" 
+                                                 Foreground="Black" 
+                                                 TextWrapping="Wrap"/>
+                                      <TextBlock Text="{Binding NoteText}" 
+                                                 FontSize="14" Foreground="Black" 
+                                                 TextWrapping="Wrap" 
+                                                 Margin="0,5,0,0"/>
+                                  </StackPanel>
+                              </Border>
+                          </DataTemplate>
+                      </ListBox.ItemTemplate>
+                  </ListBox>
               </ScrollViewer>
           </Grid>
         </Border>

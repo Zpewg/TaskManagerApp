@@ -19,10 +19,10 @@ public partial class AddNoteUserControl : UserControl
         this.DataContext = new JournalUserControlViewModel(journalService, user, journalRepository);
         
     }
-    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         var journal = (JournalUserControlViewModel)this.DataContext;
-        
+        await journal.addNote();
     }
 
     private void BackButton_Click(object sender, RoutedEventArgs e)

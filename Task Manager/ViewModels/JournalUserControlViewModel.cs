@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using Task_Manager.Entities;
 using Task_Manager.Repository;
 using Task_Manager.Service;
@@ -22,9 +23,10 @@ public class JournalUserControlViewModel
         _journalService = journalService;
         _journalRepository = journalRepository;
         _user = user;
+        LoadTasks();
     }
     
-    private ObservableCollection<UserTasks> _notes = new ObservableCollection<UserTasks>();
+    private ObservableCollection<TaskJournal> _notes = new ObservableCollection<TaskJournal>();
 
     public event PropertyChangedEventHandler PropertyChanged;
     
@@ -49,11 +51,10 @@ public class JournalUserControlViewModel
         get => _user;
         set { _user = value; 
         OnPropertyChanged(nameof(User));
-    }
-}
+    } }
     public string JournalMessage => $"{User?.name}'s journal";
 
-    public ObservableCollection<UserTasks> Notes
+    public ObservableCollection<TaskJournal> Notes
     {
         get => _notes;
         set
@@ -79,12 +80,34 @@ public class JournalUserControlViewModel
         }
     }
 
+    
+    private async Task LoadTasks()
+    {
+        var journalList = await _journalRepository.GetTaskJournalsByUserIdAsync(User.idUser);
+        Notes.Clear();
+        foreach (var journal in journalList)
+        {
+            Console.WriteLine($"NOTE: {journal.journalName} - {journal.journalText}");
+            Notes.Add(journal);
+        }
+        OnPropertyChanged(nameof(Notes));
+    }
+
     public async Task addNote()
     {
         NameValidation();
         TextValidation();
         
         TaskJournal journal = new TaskJournal(_user.idUser,NoteName, NoteText);
-        await _journalService.AddTaskJournal(journal);
+        List<string> errors = await _journalService.AddTaskJournal(journal);
+        if (errors.Any())
+        {
+            string errorMsg = string.Join("\n", errors);
+            MessageBox.Show(errorMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        MessageBox.Show("Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        Notes.Add(journal);
+        OnPropertyChanged(nameof(Notes));
     }
 }

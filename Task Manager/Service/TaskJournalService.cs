@@ -18,7 +18,7 @@ public class TaskJournalService
     public async Task<List<string>> AddTaskJournal(TaskJournal taskJournal)
     {
         List<string> errors = await _journalValidation.JournalValidation(taskJournal);
-        if (errors.Count > 0)
+        if (errors.Any())
         {
             return errors;
         }
@@ -41,9 +41,5 @@ public class TaskJournalService
         }
         return "Task journal not found";
     }
-
-    public async Task<List<TaskJournal>> GetTaskJournals()
-    {
-        return await _repository.GetTaskJournalsAsync();
-    }
+    
 }

@@ -12,12 +12,17 @@ public partial class JournalUserControl : UserControl
     private User _user;
     public JournalUserControl(User user)
     {
+       
         InitializeComponent();
+    
         var journalService = App.ServiceProvider.GetRequiredService<TaskJournalService>();
+
         var journalRepository = App.ServiceProvider.GetRequiredService<TaskJournalRepository>();
         this.DataContext = new JournalUserControlViewModel(journalService, user, journalRepository);
         _user = user;
+       
     }
+    
     private void BackButton_Click(object sender, RoutedEventArgs e)
     {
         var parentWindow = Window.GetWindow(this) as TasksWindow;
@@ -28,7 +33,7 @@ public partial class JournalUserControl : UserControl
         }
     }
 
-    private void JournalButton_OnClick(object sender, RoutedEventArgs e)
+    private async void JournalButton_OnClick(object sender, RoutedEventArgs e)
     {
         var addNoteControl = new AddNoteUserControl(_user);
 

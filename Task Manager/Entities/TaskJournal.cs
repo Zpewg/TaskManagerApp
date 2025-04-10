@@ -18,6 +18,21 @@ public class TaskJournal
     [Required]
     public string journalText{get;set;}
 
+    
+    [NotMapped]
+    public string NoteName
+    {
+        get => journalName;
+        set => journalName = value;
+    }
+
+    [NotMapped]
+    public string NoteText
+    {
+        get => journalText;
+        set => journalText = value;
+    }
+
     public TaskJournal(int iduser, string journalName, string journalText)
     {
         this.iduser = iduser;
