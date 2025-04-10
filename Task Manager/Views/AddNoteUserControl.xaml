@@ -9,10 +9,10 @@
     <Grid Background="#2B3A55">
         <StackPanel Margin="30">
             <TextBlock Text="Title:" Foreground="White" Margin="0,0,0,5"/>
-            <TextBox x:Name="TitleBox" Margin="0,0,0,15"/>
+            <TextBox x:Name="TitleBox" Margin="0,0,0,15" Text="{Binding NoteName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <TextBlock Text="Content:" Foreground="White" Margin="0,0,0,5"/>
-            <TextBox x:Name="ContentBox" Height="100" AcceptsReturn="True"/>
+            <TextBox x:Name="ContentBox" Height="100" AcceptsReturn="True" Text="{Binding NoteText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <Button Content="Save"
                     Margin="0,15,0,0"

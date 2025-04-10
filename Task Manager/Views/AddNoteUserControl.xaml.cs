@@ -1,6 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using Task_Manager.Entities;
+using Task_Manager.Repository;
+using Task_Manager.Service;
 
 namespace Task_Manager.Views;
 
@@ -10,16 +13,16 @@ public partial class AddNoteUserControl : UserControl
     public AddNoteUserControl(User user)
     {
         InitializeComponent();
+        TaskJournalService journalService = App.ServiceProvider.GetRequiredService<TaskJournalService>();
+        TaskJournalRepository journalRepository = App.ServiceProvider.GetRequiredService<TaskJournalRepository>();
         _user = user;
+        this.DataContext = new JournalUserControlViewModel(journalService, user, journalRepository);
         
     }
     private void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        string title = TitleBox.Text;
-        string content = ContentBox.Text;
-
-       
-        MessageBox.Show($"Note saved for {_user.name}:\nTitle: {title}");
+        var journal = (JournalUserControlViewModel)this.DataContext;
+        
     }
 
     private void BackButton_Click(object sender, RoutedEventArgs e)

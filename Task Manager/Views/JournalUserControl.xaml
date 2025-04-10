@@ -14,12 +14,13 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <!-- Textul sus -->
+       
         <TextBlock Text="{Binding JournalMessage}" 
                    FontSize="14" FontWeight="Bold" Foreground="White"
                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,20,0,0"/>
-
-        <!-- Butonul deasupra Border-ului -->
+        
+        
+        
         <Button Content="Add note +"
                 Padding="15,4"
                 Width="110"
@@ -41,6 +42,16 @@
                     <GradientStop Color="#2B3A55" Offset="1.0"/>
                 </LinearGradientBrush>
             </Border.Background>
+          <Grid>
+              <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                  <ListBox BorderThickness="0"
+                           Background="Transparent"></ListBox>
+              </ScrollViewer>
+          </Grid>
         </Border>
 
         <!-- Buton back -->
