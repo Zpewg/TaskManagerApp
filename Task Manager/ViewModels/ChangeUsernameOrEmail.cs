@@ -2,48 +2,43 @@
 using System.Windows;
 using Task_Manager.Entities;
 using Task_Manager.Service;
-using Task_Manager.Validations;
 
 namespace Task_Manager;
 
-public class RecoverAccountViewModel
+public class ChangeUsernameOrEmail
 {
     private string _email;
+    private string _username;
+    
     private readonly UserService _userService;
     private User _user;
-    private string _username;
+    
     private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
-    public RecoverAccountViewModel(UserService userService, User user)
+    public ChangeUsernameOrEmail(UserService userService, User user)
     {
         _userService = userService;
         _user = user;
     }
-   
-    public string Email
+        public string ChangedEmail
     {
-        get { return _email; }
+        get => _email;
         set
         {
-            if (_email != value)
-            {
                 _email = value;
-                OnPropertyChanged(nameof(Email));
-            }
+                OnPropertyChanged(nameof(ChangedEmail));
         }
             
     }
 
-    public string Username
+    public string ChangedUsername
     {
-        get { return _username; }
+        get => _username; 
         set
         {
-            if (_username != value)
-            {
                 _username = value;
-                OnPropertyChanged(nameof(Username));
-            }
+                OnPropertyChanged(nameof(ChangedUsername));
+            
         }
     }
     public event PropertyChangedEventHandler PropertyChanged;
@@ -85,7 +80,7 @@ public class RecoverAccountViewModel
 
     public void ValidateEmail()
     {
-        if (string.IsNullOrEmpty(Email))
+        if (string.IsNullOrEmpty(ChangedEmail))
         {
             AddError("Email", "Email is required.");
         }
@@ -97,7 +92,8 @@ public class RecoverAccountViewModel
 
     public void ValidateUsername()
     {
-        if (string.IsNullOrEmpty(Username))
+      
+        if (string.IsNullOrEmpty(ChangedUsername))
         {
             AddError("Username", "Username is required.");
         }
@@ -110,22 +106,19 @@ public class RecoverAccountViewModel
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    public async Task<bool> RecoverAccount()
+    
+    public async Task ChangeUserName()
     {
-        ValidateEmail();
+        ValidateUsername();
+        Console.WriteLine(ChangedUsername);
         if (HasErrors)
         {
             MessageBox.Show("All fields must be filled.");
+            return;
         }
-        string errorMessage = await _userService.checkForUserMail(Email);
-        if (errorMessage == "Email doesn't exist")
-        {
-            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return false;
-        }
-        return true;
-
+        await _userService.updateUserName(_user, ChangedUsername);
+        OnPropertyChanged(nameof(ChangedUsername));
+        MessageBox.Show("User name changed.");
+        
     }
-    
 }

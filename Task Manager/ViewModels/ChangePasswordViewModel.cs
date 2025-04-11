@@ -55,7 +55,13 @@ public class ChangePasswordViewModel
     
     public string ValidatePasswords()
     {
-        return Password.Equals(Password2) ? "valid" : "Passwords do not match!";
+        if (Password.Equals(Password2))
+        {
+            return null;  
+        }
+        
+            return "Passwords do not match!";  
+        
     }
     
 
@@ -65,13 +71,12 @@ public class ChangePasswordViewModel
         if (error != null)
         {
            MessageBox.Show(error);
+           return false;
         }
-        string result = await _userService.updateUserPassword(_email, Password);
-        if (result == "Password successfully updated")
-        {
+        await _userService.updateUserPassword(_email, Password);
             return true;
-        }
-        return false;
+        
+       
     }
 
 

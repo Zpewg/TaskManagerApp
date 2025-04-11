@@ -48,6 +48,7 @@ public class User
     
     public int getIdUser() => idUser;
     public string getMail() => email;
+    public string getUsername() => name;
     public override string ToString()
     {
         return $"Id:{idUser} Name: {name}\nEmail: {email}\n Phone: {phoneNumber}";

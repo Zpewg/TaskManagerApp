@@ -52,6 +52,7 @@ public class JournalUserControlViewModel
         set { _user = value; 
         OnPropertyChanged(nameof(User));
     } }
+    public TaskJournal EditingNote { get; set; }
     public string JournalMessage => $"{User?.name}'s journal";
 
     public ObservableCollection<TaskJournal> Notes
@@ -97,17 +98,43 @@ public class JournalUserControlViewModel
     {
         NameValidation();
         TextValidation();
-        
-        TaskJournal journal = new TaskJournal(_user.idUser,NoteName, NoteText);
-        List<string> errors = await _journalService.AddTaskJournal(journal);
-        if (errors.Any())
+
+        if (EditingNote != null)
         {
-            string errorMsg = string.Join("\n", errors);
-            MessageBox.Show(errorMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
+            EditingNote.NoteName = NoteName;
+            EditingNote.NoteText = NoteText;
+            List<string>error = await _journalService.UpdateTaskJournal(EditingNote);
+            if (error.Any())
+            {
+                string errorMsg = string.Join("\n", error);
+                MessageBox.Show(errorMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            MessageBox.Show("Note updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        MessageBox.Show("Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        Notes.Add(journal);
+        else
+        {
+            var newJournal = new TaskJournal(_user.idUser, NoteName, NoteText);
+            var errors = await _journalService.AddTaskJournal(newJournal);
+            if (errors.Any())
+            {
+                string errorMsg = string.Join("\n", errors);
+                MessageBox.Show(errorMsg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Notes.Add(newJournal);
+            MessageBox.Show("Note added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         OnPropertyChanged(nameof(Notes));
     }
+
+    public async Task Delete()
+    {
+        var selectedTask = EditingNote;
+        _journalRepository.DeleteTaskJournalAsync(selectedTask);
+        _notes.Remove(selectedTask);
+        OnPropertyChanged(nameof(Notes));
+    }
+
 }

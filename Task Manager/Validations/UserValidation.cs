@@ -113,5 +113,14 @@ public class UserValidation
         }
         return string.Empty;
     }
+
+    public string returnNameUpdate(string newName)
+    {
+        if (!regexUserName.IsMatch(newName))
+        {
+            return "Name is not valid";
+        }
+        return string.Empty;
+    }
     
 }

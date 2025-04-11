@@ -102,6 +102,7 @@ public partial class TasksWindow : Window
             }
         };
         
+        
     }
     private void TasksWindow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -134,7 +135,7 @@ public partial class TasksWindow : Window
 
     public void UserSettingsButton_Click(object sender, RoutedEventArgs e)
     {
-        var userSettings = new UserSettingsUserControl();
+        var userSettings = new UserSettingsUserControl(_loggedUser);
 
         UserSettingsContainer.Content = userSettings;
         UserSettingsContainer.Visibility = Visibility.Visible;

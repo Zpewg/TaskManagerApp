@@ -23,7 +23,6 @@ public partial class ChangePasswordWindow : Window
         if (await viewModel.changeUserPassword())
         {
             MessageBox.Show("Password changed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            mainWindow.Show();
             this.Close();
         }
     }

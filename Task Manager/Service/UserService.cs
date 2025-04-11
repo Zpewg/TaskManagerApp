@@ -47,15 +47,11 @@ public class UserService
             
     }
 
-    public async Task<string> updateUserPassword(string mail, string password)
+    public async Task updateUserPassword(string mail, string password)
     {
         
         var user = await _userRepository.ReturnUser(mail);
-
-        if (user == null)
-        {
-            return "User not found";
-        }
+        
 
         string passwordValidation = _userValidation.returnPasswordUpdate(password);
         if (passwordValidation.IsNullOrEmpty())
@@ -63,9 +59,18 @@ public class UserService
             var cryptPassword = BCrypt.HashPassword(password);
             user.password = cryptPassword;
             await _userRepository.UpdateUserAsync(user);
-            return "Password successfully updated";
+            
         }
-        return passwordValidation;
+    }
+
+    public async Task updateUserName(User user, string newName)
+    {
+        string nameValidation = _userValidation.returnNameUpdate(user.getUsername());
+        if (nameValidation.IsNullOrEmpty())
+        {
+            user.name = newName;
+            await _userRepository.UpdateUserAsync(user);
+        }
     }
 
 

@@ -29,19 +29,11 @@ public class TaskJournalRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteTaskJournalAsync(int id)
+    public async Task DeleteTaskJournalAsync(TaskJournal taskJournal)
     {
-        var taskJournal = await _context.TaskJournal.FindAsync(id);
         _context.TaskJournal.Remove(taskJournal);
         await _context.SaveChangesAsync();
     }
-
-    public async Task<int?> GetTaskJournalIdAsync(string taskJournalName)
-    {
-        return await _context.TaskJournal
-            .Where(u=> u.journalName == taskJournalName)
-            .Select(u => (int?)u.idTaskJournal)
-            .FirstOrDefaultAsync();
-    }
+    
     
 }

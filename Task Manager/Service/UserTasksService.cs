@@ -41,12 +41,7 @@ public class UserTasksService
         }
         return error;
     }
-
-    public async Task<List<UserTasks>> GetUserTasks()
-    {
-        List<UserTasks> userTasks = await _userTasks.GetUserTasks();
-        return userTasks;
-    }
+    
 
  
 }

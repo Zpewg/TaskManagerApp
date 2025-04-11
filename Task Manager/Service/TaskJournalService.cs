@@ -26,20 +26,16 @@ public class TaskJournalService
         return errors;
     }
 
-    public async Task UpdateTaskJournal(TaskJournal taskJournal)
+    public async Task<List<string>> UpdateTaskJournal(TaskJournal taskJournal)
     {
-        await _repository.UpdateTaskJournalAsync(taskJournal);
-    }
-
-    public async Task<string> DeleteTaskJournal(string taskJournalName)
-    {
-        int? id =  await _repository.GetTaskJournalIdAsync(taskJournalName);
-        if (id.HasValue)
+        List<string> errors = await _journalValidation.JournalValidation(taskJournal);
+        if (errors.Any())
         {
-            await _repository.DeleteTaskJournalAsync(id.Value);
-            return "Task journal deleted";
+            return errors;
         }
-        return "Task journal not found";
+        await _repository.UpdateTaskJournalAsync(taskJournal);
+        return errors;
     }
+    
     
 }

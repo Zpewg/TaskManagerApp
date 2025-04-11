@@ -19,8 +19,6 @@
                    FontSize="14" FontWeight="Bold" Foreground="White"
                    VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,20,0,0"/>
         
-        
-        
         <Button Content="Add note +"
                 Padding="15,4"
                 Width="110"
@@ -28,9 +26,9 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Style="{DynamicResource RoundedButton}"
-                Click="JournalButton_OnClick"/>
+                Click="JournalButton_OnClick" />
 
-        <!-- Border-ul cu fundalul violet -->
+        
         <Border CornerRadius="15"
                 BorderBrush="White" BorderThickness="2"
                 Padding="30" Margin="100,80,100,100"
@@ -50,6 +48,8 @@
               <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                   <ListBox ItemsSource="{Binding Notes}" 
                            SelectedItem="{Binding SelectedNote, Mode=TwoWay}" 
+                           MouseDoubleClick="ListBox_MouseDoubleClick"
+                           PreviewMouseRightButtonDown="NotesListBox_OnMouseRightClick"
                            BorderThickness="0"
                            Background="Transparent"
                            Margin="10">
@@ -73,6 +73,21 @@
               </ScrollViewer>
           </Grid>
         </Border>
+        <Popup x:Name="TaskActionPopup" StaysOpen="True" Placement="MousePoint">
+            <Border BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="5">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#4B3A67" Offset="0.0"/>
+                        <GradientStop Color="#4B0082" Offset="0.5"/>
+                        <GradientStop Color="#2B3A55" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel Width="300">
+                    <Button Content="Delete Task" Width="100" Margin="5" Background="Red"
+                            Click="DeleteTaskButton_Click" />
+                </StackPanel>
+            </Border>
+        </Popup>
 
         <!-- Buton back -->
         <Button Content="Back"

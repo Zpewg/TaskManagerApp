@@ -31,13 +31,7 @@ public partial class LoginWindow : Window
             this.Close();
         }
     }
-
-
-    private void RecoverAccountButton_Click(object sender, RoutedEventArgs e)
-    {
-        RecoverAccountWindow recoverAccountWindow = new();
-        recoverAccountWindow.Show();
-    }
+    
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {

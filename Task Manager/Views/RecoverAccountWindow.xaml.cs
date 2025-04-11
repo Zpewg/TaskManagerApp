@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Task_Manager.Entities;
 using Task_Manager.Service;
 
 
@@ -8,11 +9,11 @@ namespace Task_Manager.Views;
 
 public partial class RecoverAccountWindow 
 {
-    public RecoverAccountWindow()
+    public RecoverAccountWindow(User user)
     {
         InitializeComponent();
         var userService = App.ServiceProvider.GetRequiredService< UserService >() ;
-        this.DataContext = new RecoverAccountViewModel(userService);
+        this.DataContext = new RecoverAccountViewModel(userService, user);
     }
 
 
