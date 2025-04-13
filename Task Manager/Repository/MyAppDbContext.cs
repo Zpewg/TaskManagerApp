@@ -8,6 +8,7 @@ namespace Task_Manager.Repository;
 
 public class MyAppDbContext : DbContext
 {
+ 
     public DbSet<User> Users { get; set; }
     public DbSet<TaskJournal> TaskJournal { get; set; }
     public DbSet<UserTasks> UserTasks { get; set; }
@@ -16,5 +17,6 @@ public class MyAppDbContext : DbContext
     {
         
     }
+    
     
 }

@@ -19,21 +19,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
+        <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
+        <Using Include="Xunit" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include ="C:\Task Manager App\Task Manager\Task Manager\Task Manager.csproj"/>
+        <ProjectReference Include="C:\Task Manager App\Task Manager\Task Manager\Task Manager.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
         <PackageReference Include="Moq" Version="4.20.72" />
-        <PackageReference Include="xunit.v3" Version="2.0.0"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2"/>
+        <PackageReference Include="xunit.v3" Version="2.0.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2" />
     </ItemGroup>
 
 </Project>

@@ -110,7 +110,6 @@ public class ChangeUsernameOrEmail
     public async Task ChangeUserName()
     {
         ValidateUsername();
-        Console.WriteLine(ChangedUsername);
         if (HasErrors)
         {
             MessageBox.Show("All fields must be filled.");
@@ -120,5 +119,23 @@ public class ChangeUsernameOrEmail
         OnPropertyChanged(nameof(ChangedUsername));
         MessageBox.Show("User name changed.");
         
+    }
+
+    public async Task ChangeEmail()
+    {
+        ValidateEmail();
+        if (HasErrors)
+        {
+            MessageBox.Show("All fields must be filled.");
+            return;
+        }
+
+        if (!await _userService.updateUserEmail(_user, ChangedEmail))
+        {
+            MessageBox.Show("User email not changed.");
+            return;
+        }
+        OnPropertyChanged(nameof(ChangedEmail));
+        MessageBox.Show("User email changed.");
     }
 }

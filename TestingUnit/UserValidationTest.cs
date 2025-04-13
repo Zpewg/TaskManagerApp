@@ -26,6 +26,7 @@ public class UserValidationTest
         serviceCollection.AddScoped<UserRepository>();
         serviceCollection.AddScoped<UserService>();
         serviceCollection.AddScoped<UserValidation>();
+        
         ServiceProvider = serviceCollection.BuildServiceProvider();
         _userValidation = ServiceProvider.GetService<UserValidation>();
     }
@@ -95,5 +96,13 @@ public class UserValidationTest
         var user4 = new User("Adnrei", "Andrei@gmail.com", "Asdasdasd123!", wrongPhoneNumber);
         List<string> test = await _userValidation.Validate(user4);
         Assert.Contains(test, x => x.Contains("Phone number is not valid"));
+    }
+
+    [Fact]
+    public async Task AlreadyTakenEmailTestUpdate()
+    {
+        var user = new User("Andrei", "mstefanandrei129@gmail.com", "Andremail123!", "0712345678");
+        string test = await _userValidation.emailTakenUpdate(user);
+        Assert.Empty(test);
     }
 }

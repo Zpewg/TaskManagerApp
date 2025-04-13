@@ -120,10 +120,10 @@ public class TasksWindowViewModel : INotifyPropertyChanged
 
     private async void BeforeLoadTasks(User user)
     {
-        await LoadTasks(user);
+        await LoadTasks();
     }
     
-    private async Task LoadTasks(User user)
+    private async Task LoadTasks()
     {
         var userTasks = await _userTasksRepository.GetUserTasksByUserId(User.idUser);
         Tasks.Clear();
@@ -255,7 +255,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Tasks));
         }
        OnPropertyChanged(nameof(SelectedTask));
- 
+       await LoadTasks();
     }
 
     public async Task DeleteTask()

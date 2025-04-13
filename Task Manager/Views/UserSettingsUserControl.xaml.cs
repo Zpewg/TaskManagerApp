@@ -47,20 +47,17 @@ public partial class UserSettingsUserControl : UserControl
 
     private void ChangeUserNameButton_Click(object sender, RoutedEventArgs e)
     {
-        var viewModel = new ChangeUsernameOrEmail(_userService, _user);
+        var viewModel = (ChangeUsernameOrEmail)this.DataContext;
         viewModel.ChangeUserName();
     }
 
     private void ChangeMailButton_Click(object sender, RoutedEventArgs e)
     {
-        if (!TaskActionPopup.IsOpen)
-        {
-            TaskActionPopup.IsOpen = true;
-        }
+        var viewModel =(ChangeUsernameOrEmail)this.DataContext;
+        viewModel.ChangeEmail();
     }
     private void Popup_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        // Verifică dacă click-ul a avut loc în afară de Pop-up
         if (!TaskActionPopup.IsMouseOver && !TaskActionPopup1.IsMouseOver)
         {
             TaskActionPopup.IsOpen = false;

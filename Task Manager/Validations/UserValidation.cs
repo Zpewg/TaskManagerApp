@@ -77,16 +77,18 @@ public class UserValidation
         }
     }
 
-    public void returnEmailAlreadyTaken(User user)
+    public async Task returnEmailAlreadyTaken(User user)
     {
+        users = await _userRepository.GetUsersAsync();
         if (users.Where(u=> u.email.Equals(user.email)).Count() > 0)
         {
             errors.Add("Email is already taken");
         }
     }
 
-    public void returnPhoneNumberAlreadyTaken(User user)
+    public async Task returnPhoneNumberAlreadyTaken(User user)
     {
+        users = await _userRepository.GetUsersAsync();
         if (users.Where(u => u.phoneNumber.Equals(user.phoneNumber)).Count() > 0)
         {
             errors.Add("Phone number is already taken");
@@ -120,6 +122,26 @@ public class UserValidation
         {
             return "Name is not valid";
         }
+        return string.Empty;
+    }
+
+    public string returnEmailUpdate(string newEmail)
+    {
+        if (!regexMail.IsMatch(newEmail))
+        {
+            return "Email is not valid";
+        }
+        return string.Empty;
+    }
+
+    public async Task<string> emailTakenUpdate(User user)
+    {
+        users = await _userRepository.GetUsersAsync();
+        if (users.Any(u => u.email.Equals(user.email) && u.idUser != user.idUser))
+        {
+            return "Email is already taken";
+        }
+
         return string.Empty;
     }
     

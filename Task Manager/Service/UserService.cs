@@ -73,6 +73,19 @@ public class UserService
         }
     }
 
+    public async Task<bool> updateUserEmail(User user, string newEmail)
+    {
+        string emailValidation = _userValidation.returnEmailUpdate(newEmail);
+        string emailTaken = await _userValidation.emailTakenUpdate(user);
+        if (emailValidation.IsNullOrEmpty() && emailTaken.IsNullOrEmpty())
+        {
+            user.email = newEmail;
+            await _userRepository.UpdateUserAsync(user);
+            return true;
+        }
+        Console.WriteLine($"{emailTaken} - {emailValidation}");
+        return false;
+    }
 
 
     public async Task<string> checkForUserMail(string Mail)
