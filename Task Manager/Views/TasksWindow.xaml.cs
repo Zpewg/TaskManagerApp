@@ -14,6 +14,7 @@ public partial class TasksWindow : Window
 {
 
     private User _loggedUser;
+    private NotificationService _notificationService;
     public TasksWindow(User user)
     {
         InitializeComponent();
@@ -42,6 +43,8 @@ public partial class TasksWindow : Window
         var userTasksRepository = App.ServiceProvider.GetRequiredService<UserTasksRepository>();
         this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
         this.PreviewMouseDown += TasksWindow_PreviewMouseDown;
+        _notificationService = new NotificationService(userTasksRepository, user);
+       // _notificationService.Start();
         _loggedUser = user;
     }
 

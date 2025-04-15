@@ -32,9 +32,8 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         
         _user = user;
         
-        _userTasksRepository = userTasksRepository;
-
-        BeforeLoadTasks(user);
+        _userTasksRepository = userTasksRepository; 
+        BeforeLoadTasks();
        
     }
     
@@ -118,7 +117,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private async void BeforeLoadTasks(User user)
+    private async void BeforeLoadTasks()
     {
         await LoadTasks();
     }
