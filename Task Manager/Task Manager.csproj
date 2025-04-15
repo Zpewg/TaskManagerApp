@@ -51,4 +51,15 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Fonts\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Fonts\static\Montserrat-Regular.ttf" />
+      <Resource Include="Fonts\static\Montserrat-Regular.ttf" />
+      <None Remove="Fonts\static\Montserrat-SemiBoldItalic.ttf" />
+      <Resource Include="Fonts\static\Montserrat-SemiBoldItalic.ttf" />
+    </ItemGroup>
+
 </Project>

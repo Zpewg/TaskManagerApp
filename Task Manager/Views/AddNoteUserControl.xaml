@@ -5,28 +5,75 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Task_Manager.Views"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
+    
     <Grid Background="#2B3A55">
-        <StackPanel Margin="30">
-            <TextBlock Text="Title:" Foreground="White" Margin="0,0,0,5"/>
-            <TextBox x:Name="TitleBox" Margin="0,0,0,15" Text="{Binding NoteName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-
-            <TextBlock Text="Content:" Foreground="White" Margin="0,0,0,5"/>
-            <TextBox x:Name="ContentBox" Height="100" AcceptsReturn="True" Text="{Binding NoteText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-
-            <Button Content="Save"
-                    Margin="0,15,0,0"
-                    HorizontalAlignment="Right"
-                    Style="{DynamicResource RoundedButton}"
-                    Click="SaveButton_Click"/>
-        </StackPanel>
+        
+        <!-- Back Button -->
         <Button Content="Back"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Background="Gray"
-                Width="35"
-                Height="20"
-                Margin="10"
+                Width="60"
+                Height="30"
+                Margin="0,10,10,0"
                 Click="BackButton_Click"/>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="800">
+            
+            <!-- Heading -->
+            <TextBlock Text="Add New Note"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,30"/>
+
+            <!-- Card Container -->
+            <Border Background="#32425F"
+                    CornerRadius="12"
+                    Padding="20"
+                    Margin="0,0,0,20">
+                <StackPanel>
+
+                    <!-- Title -->
+                    <TextBlock Text="Title:" 
+                               Foreground="White" 
+                               FontSize="18" 
+                               FontFamily="{StaticResource Montserrat-Regular}"
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,5"/>
+                    <TextBox x:Name="TitleBox"
+                             Margin="0,0,0,15"
+                             Text="{Binding NoteName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Style="{DynamicResource NoteTextBoxStyle}"
+                             FontFamily="{StaticResource Montserrat-Regular}"/>
+
+                    <!-- Content -->
+                    <TextBlock Text="Content:"
+                               Foreground="White"
+                               FontFamily="{StaticResource Montserrat-Regular}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,5"/>
+                    <TextBox x:Name="ContentBox"
+                             Style="{DynamicResource NoteTextBoxStyle}"
+                             Height="250"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             FontFamily="{StaticResource Montserrat-Regular}"
+                             Text="{Binding NoteText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                </StackPanel>
+            </Border>
+
+            <!-- Save Button -->
+            <Button Content="Save"
+                    Width="100"
+                    HorizontalAlignment="Right"
+                    Style="{DynamicResource RoundedButton}"
+                    Click="SaveButton_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>

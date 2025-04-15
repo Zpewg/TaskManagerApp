@@ -38,6 +38,28 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <FontFamily x:Key="Montserrat-Regular">pack://application:,,,/Task Manager;component/Fonts/static/Montserrat-SemiBoldItalic.ttf</FontFamily>
+            <Style x:Key="NoteTextBoxStyle" TargetType="TextBox">
+                <Setter Property="Background" Value="#3E4A65"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="8"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="6"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ScrollViewer x:Name="PART_ContentHost"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>
