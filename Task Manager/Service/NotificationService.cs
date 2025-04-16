@@ -1,4 +1,5 @@
 ﻿using System.Windows.Threading;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Task_Manager.Entities;
 using Task_Manager.Repository;
 
@@ -22,8 +23,9 @@ public class NotificationService
         }
         
        BeforeReturningUserTasks();
-       //_timer.Tick += Timer_Tick;
        Start();
+       _timer.Tick += Timer_Tick;
+       
      
     }
 
@@ -42,10 +44,27 @@ public class NotificationService
     private void Timer_Tick(object sender, EventArgs e)
     {
         var now = DateTime.Now;
-
-        foreach (var task in _userTasks)
+        if (_userTasks != null)
         {
-           
+            foreach (var task in _userTasks)
+            {
+                var taskDateTime = task.date.ToDateTime(task.time);
+                var hoursUntilTask =(taskDateTime - now).TotalHours;
+
+                if ((Math.Abs(hoursUntilTask - 24) < 1 || Math.Abs(hoursUntilTask - 2) < 1)
+                    && !_notifications.Contains($"{task.idUserTasks} -- {(int)hoursUntilTask}"))
+                {
+                    _notifications.Add($"{task.idUserTasks} -- {(int)hoursUntilTask}");
+                }
+            }
         }
+    }
+
+    private void ShowToast(string message, DateTime time, double hours)
+    {
+        new ToastContentBuilder()
+            .AddText($"Reminder: in {(int)hours}h")
+            .AddText($"{message} at {time:HH:mm}")
+            .Show();
     }
 }
