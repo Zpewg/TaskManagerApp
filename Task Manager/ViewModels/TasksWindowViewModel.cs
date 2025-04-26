@@ -198,6 +198,13 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         }
     }
 
+    public void ValidateDescription()
+    {
+        if (string.IsNullOrEmpty(Description))
+        {
+            Description = "Untitled";
+        }
+    }
 
 
     public async Task CreateTask()
@@ -205,6 +212,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
         ValidateTaskName();
         ValidateDueDate(); 
         ValidateTimeInput();
+        ValidateDescription();
         if (HasErrors)
         {
             MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

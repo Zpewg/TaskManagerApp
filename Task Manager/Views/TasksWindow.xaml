@@ -147,7 +147,7 @@
                             </LinearGradientBrush>
                         </Border.Background>
                         <StackPanel Width="300">
-                        <TextBlock Text="Add New Task" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
+                        <TextBlock Text="Edit Task" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
                         <DatePicker x:Name="TaskDatePickerChanged" Width="250" Margin="0,5,0,10" Text="{Binding DueDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <TextBlock Text="Due Time (HH:MM):" Foreground="White"/>
                         <TextBox x:Name="TaskTimeTextBoxChanged" Width="250" Margin="0,5,0,10" Text="{Binding TimeInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>

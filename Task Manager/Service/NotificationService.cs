@@ -10,6 +10,7 @@ public class NotificationService
     private  List<UserTasks> _userTasks;
     private readonly DispatcherTimer _timer;
     private UserTasksRepository _repository;
+    private DateTime _lastUpdate =DateTime.MinValue;
     private User _loggedUser;
     private readonly HashSet<string> _notifications = new();
 
@@ -44,26 +45,32 @@ public class NotificationService
     private void Timer_Tick(object sender, EventArgs e)
     {
         var now = DateTime.Now;
+        if ((now - _lastUpdate).TotalMinutes >= 5)
+        {
+            _ = ReturnUserTasks();
+            _lastUpdate = now;
+        }
         if (_userTasks != null)
         {
             foreach (var task in _userTasks)
             {
                 var taskDateTime = task.date.ToDateTime(task.time);
-                var hoursUntilTask =(taskDateTime - now).TotalHours;
-
-                if ((Math.Abs(hoursUntilTask - 24) < 1 || Math.Abs(hoursUntilTask - 2) < 1)
-                    && !_notifications.Contains($"{task.idUserTasks} -- {(int)hoursUntilTask}"))
+                int minutesUntilTask = (int)(taskDateTime - now).TotalMinutes;
+                if ((minutesUntilTask == 120 || minutesUntilTask == 1440) &&
+                    !_notifications.Contains($"{task.idUserTasks}-{minutesUntilTask}"))
                 {
-                    _notifications.Add($"{task.idUserTasks} -- {(int)hoursUntilTask}");
+                    
+                    ShowToast(task.Description, taskDateTime, minutesUntilTask);
+                    _notifications.Add($"{task.idUserTasks}-{minutesUntilTask}");
                 }
             }
         }
     }
 
-    private void ShowToast(string message, DateTime time, double hours)
+    private void ShowToast(string message, DateTime time, int hours)
     {
         new ToastContentBuilder()
-            .AddText($"Reminder: in {(int)hours}h")
+            .AddText($"Reminder: in {hours/60}h")
             .AddText($"{message} at {time:HH:mm}")
             .Show();
     }
