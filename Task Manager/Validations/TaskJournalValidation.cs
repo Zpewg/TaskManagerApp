@@ -15,7 +15,7 @@ public class TaskJournalValidation
         List<string> result = new List<string>();
         
         //Any kind of character, numbers included, max 18 ch
-        Regex regexJournalName = new Regex(@"^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/~`=-]{1,18}$");
+        Regex regexJournalName = new Regex(@"^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/~`=\-\s]{1,18}$");
 
 
         if (!regexJournalName.IsMatch(journal.journalName))

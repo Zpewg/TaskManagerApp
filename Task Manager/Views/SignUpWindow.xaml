@@ -6,7 +6,9 @@
         xmlns:validations="clr-namespace:Task_Manager.Validations"
         xmlns:helpers="clr-namespace:Task_Manager.Helpers"
         mc:Ignorable="d"
-        Title="SignUp" Height="450" Width="800">
+        Title="SignUp" 
+        WindowState="Maximized"
+        Width="800" Height="450">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

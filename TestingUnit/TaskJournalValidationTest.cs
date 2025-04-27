@@ -13,27 +13,31 @@ public class TaskJournalValidationTest
 {
     private readonly TaskJournalValidation _taskJournalValidation;
     private readonly UserRepository _userRepository;
-    
-    private IServiceProvider ServiceProvider{get; set;}
+    private readonly MyAppDbContext _dbContext;
 
     public TaskJournalValidationTest()
     {
         var serviceCollection = new ServiceCollection();
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("C:\\Task Manager App\\Task Manager\\Task Manager\\appsettings.json", optional: false, reloadOnChange: true)
-            .Build();
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        serviceCollection.AddDbContext<MyAppDbContext>(options => 
-            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21))));
-        serviceCollection.AddScoped<TaskJournalRepository>();
+
+        serviceCollection.AddDbContext<MyAppDbContext>(options =>
+            options.UseInMemoryDatabase("TaskJournalValidationTestDB"));
+
         serviceCollection.AddScoped<UserRepository>();
         serviceCollection.AddScoped<UserService>();
+        serviceCollection.AddScoped<TaskJournalRepository>();
         serviceCollection.AddScoped<TaskJournalService>();
         serviceCollection.AddScoped<TaskJournalValidation>();
-        ServiceProvider = serviceCollection.BuildServiceProvider();
-        _taskJournalValidation = ServiceProvider.GetService<TaskJournalValidation>();
-        _userRepository = ServiceProvider.GetService<UserRepository>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        _dbContext = serviceProvider.GetRequiredService<MyAppDbContext>();
+
+        // Populate with initial test data
+        _dbContext.Users.Add(new User("TestUser", "ceva@gmail.com", "TestPass123!", "0712345678"));
+        _dbContext.SaveChanges();
+
+        _userRepository = serviceProvider.GetRequiredService<UserRepository>();
+        _taskJournalValidation = serviceProvider.GetRequiredService<TaskJournalValidation>();
     }
 
     private async Task<int> returnInt()

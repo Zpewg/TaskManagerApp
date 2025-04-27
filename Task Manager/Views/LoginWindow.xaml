@@ -5,7 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpers="clr-namespace:Task_Manager.Helpers"
         mc:Ignorable="d"
-        Title="Login" Height="350" Width="600">
+        Title="Login" 
+        WindowState="Maximized"
+        Width="800" Height="450">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

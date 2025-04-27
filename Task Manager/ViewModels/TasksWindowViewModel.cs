@@ -166,7 +166,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrEmpty(TaskName))
         {
-            AddError("TaskName", "TaskName cannot be empty");
+            AddError("TaskName", "Task Name cannot be empty");
         }
         else
         {
@@ -230,7 +230,7 @@ public class TasksWindowViewModel : INotifyPropertyChanged
        }
        Tasks.Add(userTasks);
        OnPropertyChanged(nameof(Tasks));
-       MessageBox.Show(userTasks.idUser + " has been created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+       MessageBox.Show( "Task has been created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
     public async Task EditTask()
     {
