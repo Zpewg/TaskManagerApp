@@ -45,7 +45,7 @@ namespace Task_Manager
 
 
                 var context = ServiceProvider.GetRequiredService<MyAppDbContext>();
-                context.Database.Migrate(); // Aplica migrarea la runtime
+                context.Database.Migrate(); 
             
          
             base.OnStartup(e);

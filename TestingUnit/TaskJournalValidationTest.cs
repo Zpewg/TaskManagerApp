@@ -32,7 +32,7 @@ public class TaskJournalValidationTest
 
         _dbContext = serviceProvider.GetRequiredService<MyAppDbContext>();
 
-        // Populate with initial test data
+        
         _dbContext.Users.Add(new User("TestUser", "ceva@gmail.com", "TestPass123!", "0712345678"));
         _dbContext.SaveChanges();
 

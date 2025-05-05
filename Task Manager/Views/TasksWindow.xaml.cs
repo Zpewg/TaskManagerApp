@@ -44,7 +44,7 @@ public partial class TasksWindow : Window
         this.DataContext =new TasksWindowViewModel(userTasksService, user, userTasksRepository);
         this.PreviewMouseDown += TasksWindow_PreviewMouseDown;
         _notificationService = new NotificationService(userTasksRepository, user);
-       // _notificationService.Start();
+      
         _loggedUser = user;
     }
 

@@ -32,7 +32,7 @@ public class NotificationService
 
     public async Task BeforeReturningUserTasks()
     {
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        await Task.Delay(TimeSpan.FromSeconds(10));
         await ReturnUserTasks();
     }
 
@@ -45,7 +45,7 @@ public class NotificationService
     private void Timer_Tick(object sender, EventArgs e)
     {
         var now = DateTime.Now;
-        if ((now - _lastUpdate).TotalMinutes >= 5)
+        if ((now - _lastUpdate).TotalMinutes >= 1)
         {
             _ = ReturnUserTasks();
             _lastUpdate = now;
@@ -60,7 +60,7 @@ public class NotificationService
                     !_notifications.Contains($"{task.idUserTasks}-{minutesUntilTask}"))
                 {
                     
-                    ShowToast(task.Description, taskDateTime, minutesUntilTask);
+                    ShowToast(task.TaskName, taskDateTime, minutesUntilTask);
                     _notifications.Add($"{task.idUserTasks}-{minutesUntilTask}");
                 }
             }
