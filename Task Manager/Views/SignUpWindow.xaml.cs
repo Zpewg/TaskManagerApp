@@ -12,7 +12,7 @@ public partial class SignUpWindow : Window
         InitializeComponent();
     
         var userService = App.ServiceProvider.GetService<UserService>();
-            this.DataContext = new SignUpViewModel(userService);
+        this.DataContext = new SignUpViewModel(userService);
         
 
     }
@@ -21,10 +21,7 @@ public partial class SignUpWindow : Window
     private async void SignUpButton_Click(object sender, RoutedEventArgs e)
     {
         var viewModel = (SignUpViewModel)this.DataContext;
-
-        viewModel.RegisterUser();
-        
-        
+        await viewModel.RegisterUser();
     }
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {

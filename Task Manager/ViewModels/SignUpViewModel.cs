@@ -26,7 +26,6 @@ namespace Task_Manager
                 {
                     _username = value;
                     OnPropertyChanged(nameof(Username));
-                    ValidateUsername();
                 }
             }
         }
@@ -42,7 +41,6 @@ namespace Task_Manager
                 {
                     _email = value;
                     OnPropertyChanged(nameof(Email));
-                    ValidateEmail();
                 }
             }
         }
@@ -58,7 +56,6 @@ namespace Task_Manager
                 {
                     _phoneNumber = value;
                     OnPropertyChanged(nameof(PhoneNumber));
-                    ValidatePhoneNumber();
                 }
             }
         }
@@ -181,6 +178,7 @@ namespace Task_Manager
 
         public async Task RegisterUser()
         {
+            
             ValidateUsername();
             ValidateEmail();
             ValidatePhoneNumber();
@@ -197,12 +195,13 @@ namespace Task_Manager
             }
 
             User newUser =  new User(Username, Email, Password, PhoneNumber);
-            
-            List<string> errors = await _userService.createUser(newUser);
-            if (errors.Any())
+            Console.WriteLine(newUser.ToString());
+            List<string> errorsFromService = await _userService.createUser(newUser);
+            if (errorsFromService.Any())
             {
-                string errorMessage = string.Join("\n", errors);
+                string errorMessage = string.Join("\n", errorsFromService);
                 MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                errorsFromService.Clear();
             }
             else
             {

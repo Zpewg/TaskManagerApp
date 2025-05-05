@@ -36,9 +36,6 @@
                 <TextBox Name="txtUsername" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
                         <Binding Path="Username" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
-                            <Binding.ValidationRules>
-                                <validations:NotEmptyValidationRule />
-                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -48,9 +45,6 @@
                 <TextBox Name="txtEmail" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
                         <Binding Path="Email" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
-                            <Binding.ValidationRules>
-                                <validations:NotEmptyValidationRule />
-                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
@@ -70,9 +64,6 @@
                 <TextBox Name="txtPhoneNumber" Width="200" TextChanged="TextBox_TextChanged">
                     <TextBox.Text>
                         <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
-                            <Binding.ValidationRules>
-                                <validations:NotEmptyValidationRule />
-                            </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
